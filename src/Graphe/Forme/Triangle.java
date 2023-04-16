@@ -1,4 +1,3 @@
-package Graphe.Forme;
 import javax.swing.*;
 import java.awt.*;
 
@@ -19,6 +18,12 @@ public class Triangle extends Sommet{
     Triangle(String n,int a,int b,int c,Color d){
         super(n,a,b,d);
         this.l=c;
+        this.posx[0]=(a+(c/2));
+        this.posy[0]=b;
+        this.posx[1]=a;
+        this.posy[1]=(b+c);
+        this.posx[2]=(a+c);
+        this.posy[2]=(b+c);
     }
     public void setCote(int a){
         this.l=a;
@@ -31,6 +36,12 @@ public class Triangle extends Sommet{
     }
     public int getCote(){
         return this.l;
+    }
+    public int getXCenter(){
+        return this.x+(this.l/2);
+    }
+    public int getYCenter(){
+        return this.y+(this.l/2);
     }
     public void paint(Graphics g){
         Graphics2D g2 = (Graphics2D) g;

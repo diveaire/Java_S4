@@ -1,4 +1,3 @@
-package Graphe.Forme;
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,6 +16,12 @@ public class Rond extends Sommet{
     }
     public int getR(){
         return this.r;
+    }
+    public int getXCenter(){
+        return this.x+(this.r/2);
+    }
+    public int getYCenter(){
+        return this.y+(this.r/2);
     }
     public void paint(Graphics g){
         Graphics2D g2 = (Graphics2D) g;

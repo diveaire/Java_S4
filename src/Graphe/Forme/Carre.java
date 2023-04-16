@@ -1,4 +1,3 @@
-package Graphe.Forme;
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,6 +16,12 @@ public class Carre extends Sommet{
     }
     public int getCote(){
         return this.l;
+    }
+    public int getXCenter(){
+        return this.x+(this.l/2);
+    }
+    public int getYCenter(){
+        return this.y+(this.l/2);
     }
     public void paint(Graphics g){
         Graphics2D g2 = (Graphics2D) g;

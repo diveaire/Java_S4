@@ -1,22 +1,17 @@
-package Graphe.Forme;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class Sommet{
+public abstract class Sommet extends Element{
     protected int x,y;
-    private String nom;
-    private Color couleur;
     Sommet(String n,int a, int b){
+        super(n,Color.BLACK);
         this.x=a;
         this.y=b;
-        this.nom=n;
-        this.couleur=Color.BLACK;
     }
     Sommet(String n,int a, int b,Color c){
+        super(n,c);
         this.x=a;
         this.y=b;
-        this.nom=n;
-        this.couleur=c;
     }
     public void setX(int a){
         this.x=a;
@@ -24,23 +19,13 @@ public abstract class Sommet{
     public void setY(int a){
         this.y=a;
     }
-    public void setNom(String n){
-        this.nom=n;
-    }
-    public void setCouleur(Color a){
-        this.couleur=a;
-    }
     public int getX(){
         return this.x;
     }
     public int getY(){
         return this.y;
     }
-    public String getNom(){
-        return this.nom;
-    }
-    public Color getCouleur(){
-        return this.couleur;
-    }
+    public abstract int getXCenter();
+    public abstract int getYCenter();
     public abstract void paint(Graphics g);
 }
