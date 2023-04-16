@@ -3,12 +3,12 @@ import java.awt.*;
 
 public class Rond extends Sommet{
     private int r;
-    Rond(int a,int b,int c){
-        super(a,b);
+    Rond(String n,int a,int b,int c){
+        super(n,a,b);
         this.r=c;
     }
-    Rond(int a,int b,int c,Color d){
-        super(a,b,d);
+    Rond(String n,int a,int b,int c,Color d){
+        super(n,a,b,d);
         this.r=c;
     }
     public void setR(int a){
