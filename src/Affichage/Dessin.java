@@ -3,8 +3,12 @@ import java.awt.event.*;
 import javax.swing.*;
 public class Dessin extends JPanel implements MouseListener{
     private Graphe g;
+    private int size;
+    private String type;
     public Dessin(){
         this.g=new Graphe();
+        this.size=20;
+        this.type="Rond";
         addMouseListener(this);
         this.g.addSommet(new Rond("A",10,10,20));
         this.g.addSommet(new Carre("B",30,30,20));
@@ -16,6 +20,18 @@ public class Dessin extends JPanel implements MouseListener{
     }
     public Graphe getGraphe(){
         return this.g;
+    }
+    public String getType(){
+        return this.type;
+    }
+    public void setType(String newType){
+        this.type=newType;
+    }
+    public int getSizeLenght(){
+        return this.size;
+    }
+    public void setSizeLenght(int x){
+        this.size=x;
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g); 
@@ -29,8 +45,18 @@ public class Dessin extends JPanel implements MouseListener{
                 this.repaint();
             }
             else{
-                this.g.addSommet(new Rond("A",e.getX()-10,e.getY()-10,20));
-                this.repaint();
+                if(this.type=="Rond"){
+                    this.g.addSommet(new Rond("A",e.getX()-10,e.getY()-10,20));
+                    this.repaint();
+                }
+                else if(this.type=="Carre"){
+                    this.g.addSommet(new Carre("A",e.getX()-10,e.getY()-10,20));
+                    this.repaint();
+                }
+                else if(this.type=="Triangle"){
+                    this.g.addSommet(new Triangle("A",e.getX()-10,e.getY()-10,20));
+                    this.repaint();
+                }     
             }
         }
         else if((e.getButton()==MouseEvent.BUTTON3)&&(g.isSommetInList(new Rond("",e.getX(),e.getY(),20)))){
