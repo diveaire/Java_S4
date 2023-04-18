@@ -25,23 +25,23 @@ public class Triangle extends Sommet{
         this.posx[2]=(a+c);
         this.posy[2]=(b+c);
     }
-    public void setCote(int a){
+    public void setLenght(int a){
         this.l=a;
-        this.posx[0]=(this.x+(this.l/2));
-        this.posy[0]=this.y;
-        this.posx[1]=this.x;
-        this.posy[1]=(this.y+this.l);
-        this.posx[2]=(this.x+this.l);
-        this.posy[2]=(this.y+this.l);
+        this.posx[0]=(this.getX()+(this.l/2));
+        this.posy[0]=this.getY();
+        this.posx[1]=this.getX();
+        this.posy[1]=(this.getY()+this.l);
+        this.posx[2]=(this.getX()+this.l);
+        this.posy[2]=(this.getY()+this.l);
     }
-    public int getCote(){
+    public int getLenght(){
         return this.l;
     }
     public int getXCenter(){
-        return this.x+(this.l/2);
+        return this.getX()+(this.l/2);
     }
     public int getYCenter(){
-        return this.y+(this.l/2);
+        return this.getY()+(this.l/2);
     }
     public void paint(Graphics g){
         Graphics2D g2 = (Graphics2D) g;

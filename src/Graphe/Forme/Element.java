@@ -2,8 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public abstract class Element{
-    protected String nom;
-    protected Color couleur;
+    private String nom;
+    private Color couleur;
     Element(String nom){
         this.nom=nom;
     }

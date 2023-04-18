@@ -11,21 +11,21 @@ public class Carre extends Sommet{
         super(n,a,b,d);
         this.l=c;
     }
-    public void setCote(int a){
+    public void setLenght(int a){
         this.l=a;
     }
-    public int getCote(){
+    public int getLenght(){
         return this.l;
     }
     public int getXCenter(){
-        return this.x+(this.l/2);
+        return this.getX()+(this.l/2);
     }
     public int getYCenter(){
-        return this.y+(this.l/2);
+        return this.getY()+(this.l/2);
     }
     public void paint(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(this.getCouleur());
-        g2.fill3DRect(this.x,this.y,this.l,this.l,false);
+        g2.fill3DRect(this.getX(),this.getY(),this.l,this.l,false);
     }
 }

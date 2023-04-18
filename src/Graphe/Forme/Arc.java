@@ -25,6 +25,12 @@ public class Arc extends Element{
     public Sommet getS2(){
         return this.s2;
     }
+    public boolean contain(Sommet a){
+        return (a.equals(this.s1))||(a.equals(this.s2));
+    }
+    public boolean equals(Arc a){
+        return (this.s1.equals(a.getS1())&&(this.s2.equals(a.getS2())))||(this.s1.equals(a.getS2())&&(this.s2.equals(a.getS1())));
+    }
     public void paint(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(this.getCouleur());
