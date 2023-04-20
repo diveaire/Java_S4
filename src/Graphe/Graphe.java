@@ -5,13 +5,15 @@ import javax.swing.*;
 
 public class Graphe implements Serializable {
     private ArrayList<Sommet> listSom;
-    private ArrayList<Arc> listArc;
+    public ArrayList<Arc> listArc;
     public Graphe(){
         this.listSom=new ArrayList<Sommet>();
         this.listArc=new ArrayList<Arc>();
     }
     public void addSommet(Sommet s){
-        this.listSom.add(s);
+        if(!isSommetInList(s)){
+            this.listSom.add(s);
+        }
     }
     public Sommet getSommet(Sommet s){
         Sommet x=null;
@@ -41,7 +43,7 @@ public class Graphe implements Serializable {
         this.listSom.remove(x);
     }
     public void addArc(Sommet a,Sommet b){
-        if((this.getSommet(a)!=null)&&(this.getSommet(b)!=null)){
+        if(!isArcInList(new Arc(a,b))&&(this.isSommetInList(a))&&(this.isSommetInList(b))){
             this.listArc.add(new Arc(a,b));
         }
     }
@@ -59,7 +61,8 @@ public class Graphe implements Serializable {
         return !(x==null);
     }
     public void delArc(Arc a){
-        this.listArc.remove(a);
+        Arc x=this.getArc(a);
+        this.listArc.remove(x);
     }
     public void paint(Graphics g){
         for(Sommet s : this.listSom){
