@@ -6,7 +6,7 @@ public class BarreOutils extends JToolBar implements ActionListener{
     protected Dessin d;
     public BarreOutils(String nom,Dessin draw){
         super(nom);
-        this.d=d;
+        this.d=draw;
         ButtonGroup typeSommet = new ButtonGroup();
 		JRadioButton typeRond = new JRadioButton("Rond");
         JRadioButton typeCarre = new JRadioButton("Carré");
