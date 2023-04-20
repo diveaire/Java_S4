@@ -35,14 +35,33 @@ public class Dessin extends JPanel implements MouseListener{
     public Sommet getSelSom(){
         return this.selSom;
     }
+    public void setSelSom(Sommet s){
+        this.selSom=s;
+    }
     public Sommet getPrevSelSom(){
         return this.pselSom;
+    }
+    public void setPrevSelSom(Sommet s){
+        this.pselSom=s;
     }
     public Sommet getMovedSom(){
         return this.movedSom;
     }
     public Arc getSelArc(){
         return this.selArc;
+    }
+    public void setSelArc(){
+        this.selArc=this.graphe.getArc(new Arc(this.selSom,this.pselSom));
+    }
+    public void delSelArc(){
+        if(this.selArc!=null){
+            if(this.graphe.isArcInList(this.selArc)){
+                this.graphe.delArc(this.selArc);
+                this.repaint();
+                this.selArc=null;
+            }
+            
+        }
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g); 
@@ -68,6 +87,7 @@ public class Dessin extends JPanel implements MouseListener{
                     pointed.setCouleur(Color.BLACK);
                     if (this.selArc!=null){
                         this.selArc.setCouleur(Color.BLACK);
+                        this.selArc=null;
                     }
                     this.movedSom=null;
                     this.repaint();
@@ -83,6 +103,7 @@ public class Dessin extends JPanel implements MouseListener{
                     pointed.setCouleur(Color.BLACK);
                     if (this.selArc!=null){
                         this.selArc.setCouleur(Color.BLACK);
+                        this.selArc=null;
                     }
                     this.movedSom=null;
                     this.repaint();
@@ -95,11 +116,12 @@ public class Dessin extends JPanel implements MouseListener{
                     pointed.setCouleur(Color.GREEN);
                     if (this.selArc!=null){
                         this.selArc.setCouleur(Color.BLACK);
+                        this.selArc=null;
                     }
                     this.repaint();
                 }
                 if (this.selSom!=null && this.pselSom!=null && this.graphe.isArcInList(new Arc(this.selSom,this.pselSom))){
-                    this.selArc=this.graphe.getArc(new Arc(this.selSom,this.pselSom));
+                    this.setSelArc();
                     this.selArc.setCouleur(Color.GREEN);
                     this.repaint();
                 }
@@ -131,12 +153,14 @@ public class Dessin extends JPanel implements MouseListener{
                 }
                 if (this.selArc!=null){
                     this.selArc.setCouleur(Color.BLACK);
+                    this.selArc=null;
                 }
             }
             else if(this.pselSom!=null && this.pselSom.equals(pointed)){
                 this.pselSom=null;
                 if (this.selArc!=null){
                     this.selArc.setCouleur(Color.BLACK);
+                    this.selArc=null;
                 }
             }
             this.graphe.delSommet(pointed);

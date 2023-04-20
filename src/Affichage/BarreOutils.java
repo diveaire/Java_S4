@@ -26,6 +26,10 @@ public class BarreOutils extends JToolBar implements ActionListener{
 		this.add(typeRond);
 		this.add(typeCarre);
 		this.add(typeTriangle);
+        JButton suprArc=new JButton("Supprimer Arc");
+        suprArc.addActionListener(this);
+		suprArc.setActionCommand("SuprArc");
+        this.add(suprArc);
     }
     public Dessin getDessin(){
         return this.d;
@@ -37,6 +41,9 @@ public class BarreOutils extends JToolBar implements ActionListener{
         String action = ae.getActionCommand();
         if (action.equals("Rond")||action.equals("Carre")||action.equals("Triangle")) {
             this.d.setType(action);
+        }
+        else if (action.equals("SuprArc")){
+            this.d.delSelArc();
         }
     }
 }
