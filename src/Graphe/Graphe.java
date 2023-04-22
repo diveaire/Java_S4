@@ -29,6 +29,21 @@ public class Graphe implements Serializable {
         Sommet x=this.getSommet(s);
         return !(x==null);
     }
+    public boolean isAvailableName(String n){
+        boolean x=true;
+        for(Sommet s : this.listSom){
+            if(n.equals(s.getNom())){
+                x=false;
+            }
+        }
+        for(Arc a : this.listArc){
+            if(n.equals(a.getNom())){
+                x=false;
+            }
+        }
+        return x;
+        
+    }
     public void delSommet(Sommet s){
         Sommet x=this.getSommet(s);
         ArrayList<Arc> delListe=new ArrayList<Arc>();
