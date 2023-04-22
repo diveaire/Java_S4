@@ -60,8 +60,20 @@ public class Dessin extends JPanel implements MouseListener{
                 this.repaint();
                 this.selArc=null;
             }
-            
         }
+    }
+    public String askName(){
+        String x= JOptionPane.showInputDialog(this, "Nommez le nouvel élément :");
+        if(x==null){
+            x="";
+        }
+        while(!x.equals("") && !this.graphe.isAvailableName(x)){
+            x=JOptionPane.showInputDialog(this, "Nom déjà attribué ! Nommez le nouvel élément :");
+            if(x==null){
+                x="";
+            }
+        }
+        return x;
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g); 
@@ -127,18 +139,20 @@ public class Dessin extends JPanel implements MouseListener{
                 }
             }
             else{
+                String n=this.askName();
                 if(this.type=="Rond"){
-                    this.graphe.addSommet(new Rond("",e.getX()-this.size/2,e.getY()-this.size/2,this.size));
+                    this.graphe.addSommet(new Rond(n,e.getX()-this.size/2,e.getY()-this.size/2,this.size));
                     this.repaint();
                 }
                 else if(this.type=="Carre"){
-                    this.graphe.addSommet(new Carre("",e.getX()-this.size/2,e.getY()-this.size/2,this.size));
+                    this.graphe.addSommet(new Carre(n,e.getX()-this.size/2,e.getY()-this.size/2,this.size));
                     this.repaint();
                 }
                 else if(this.type=="Triangle"){
-                    this.graphe.addSommet(new Triangle("",e.getX()-this.size/2,e.getY()-this.size/2,this.size));
+                    this.graphe.addSommet(new Triangle(n,e.getX()-this.size/2,e.getY()-this.size/2,this.size));
                     this.repaint();
                 }     
+                
             }
         }
         else if((e.getButton()==MouseEvent.BUTTON3)&&(graphe.isSommetInList(new Rond("",e.getX(),e.getY(),this.size)))){
