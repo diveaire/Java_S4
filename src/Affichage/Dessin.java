@@ -10,7 +10,7 @@ public class Dessin extends JPanel implements MouseListener{
     public Dessin(){
         this.graphe=new Graphe();
         this.size=20;
-        this.type="Rond";
+        this.type="Aucun";
         this.selSom=null;
         this.pselSom=null;
         this.movedSom=null;
@@ -65,12 +65,14 @@ public class Dessin extends JPanel implements MouseListener{
     public String askName(){
         String x= JOptionPane.showInputDialog(this, "Nommez le nouvel élément :");
         if(x==null){
-            x="";
+            x="ERROR";
         }
-        while(!x.equals("") && !this.graphe.isAvailableName(x)){
-            x=JOptionPane.showInputDialog(this, "Nom déjà attribué ! Nommez le nouvel élément :");
-            if(x==null){
-                x="";
+        else{
+            while(!x.equals("") && !this.graphe.isAvailableName(x)){
+                x=JOptionPane.showInputDialog(this, "Nom déjà attribué ! Nommez le nouvel élément :");
+                if(x==null){
+                    x="";
+                }
             }
         }
         return x;
@@ -139,19 +141,40 @@ public class Dessin extends JPanel implements MouseListener{
                 }
             }
             else{
-                String n=this.askName();
-                if(this.type=="Rond"){
-                    this.graphe.addSommet(new Rond(n,e.getX()-this.size/2,e.getY()-this.size/2,this.size));
-                    this.repaint();
+                if(this.type!="Aucun"){
+                    String n=this.askName();
+                    if(n!="ERROR"){
+                        if(this.type=="Rond"){
+                            this.graphe.addSommet(new Rond(n,e.getX()-this.size/2,e.getY()-this.size/2,this.size));
+                            this.repaint();
+                        }
+                        else if(this.type=="Carre"){
+                            this.graphe.addSommet(new Carre(n,e.getX()-this.size/2,e.getY()-this.size/2,this.size));
+                            this.repaint();
+                        }
+                        else if(this.type=="Triangle"){
+                            this.graphe.addSommet(new Triangle(n,e.getX()-this.size/2,e.getY()-this.size/2,this.size));
+                            this.repaint();
+                        }     
+                    }
+                    
                 }
-                else if(this.type=="Carre"){
-                    this.graphe.addSommet(new Carre(n,e.getX()-this.size/2,e.getY()-this.size/2,this.size));
-                    this.repaint();
+                else{
+                    if(this.selSom!=null){
+                        this.selSom.setCouleur(Color.BLACK);
+                        if(this.pselSom!=null){
+                            this.pselSom.setCouleur(Color.BLACK);
+                            if(this.selArc!=null){
+                                this.selArc.setCouleur(Color.BLACK);
+                            }
+                        }
+                        this.repaint();
+                        this.selSom=null;
+                        this.pselSom=null;
+                        this.selArc=null;
+                    }
                 }
-                else if(this.type=="Triangle"){
-                    this.graphe.addSommet(new Triangle(n,e.getX()-this.size/2,e.getY()-this.size/2,this.size));
-                    this.repaint();
-                }     
+                
                 
             }
         }
@@ -184,7 +207,7 @@ public class Dessin extends JPanel implements MouseListener{
     public void mousePressed(MouseEvent e){
         if(e.getButton()==MouseEvent.BUTTON1){
             if(this.graphe.isSommetInList(new Rond("",e.getX(),e.getY(),this.size))){
-                if(this.movedSom==null && this.selSom==null && this.pselSom==null){
+                if(this.movedSom==null && this.pselSom==null){
                     this.movedSom=this.graphe.getSommet(new Rond("",e.getX(),e.getY(),this.size));
                 }
             }
@@ -193,7 +216,7 @@ public class Dessin extends JPanel implements MouseListener{
     public void mouseReleased(MouseEvent e){
         if(e.getButton()==MouseEvent.BUTTON1){
             if(!this.graphe.isSommetInList(new Rond("",e.getX(),e.getY(),this.size))){
-                if(this.movedSom!=null && this.selSom==null && this.pselSom==null){
+                if(this.movedSom!=null && this.pselSom==null){
                     this.movedSom.setX(e.getX()-this.movedSom.getLenght()/2);
                     this.movedSom.setY(e.getY()-this.movedSom.getLenght()/2);
                     this.movedSom=null;
