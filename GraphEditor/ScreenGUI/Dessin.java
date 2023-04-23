@@ -1,6 +1,12 @@
+package ScreenGUI;
+
+// PACKAGES JAVA
 import java.awt.*;
 import java.awt.event.*;  
 import javax.swing.*;
+// PACKAGES LOCAL
+import Graphe.*;
+import Graphe.Forme.*;
 public class Dessin extends JPanel implements MouseListener{
     private Graphe graphe;
     private int size;

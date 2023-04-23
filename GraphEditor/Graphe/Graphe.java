@@ -1,7 +1,11 @@
+package Graphe;
+
+// PACKAGE JAVA
 import java.util.*;
 import java.awt.*;
 import java.io.Serializable;
-import javax.swing.*;
+// PACKAGE LOCAL
+import Graphe.Forme.*;
 
 public class Graphe implements Serializable {
     private ArrayList<Sommet> listSom;

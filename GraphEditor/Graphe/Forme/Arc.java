@@ -1,16 +1,18 @@
-import javax.swing.*;
+package Graphe.Forme;
+
+
 import java.awt.*;
 
 public class Arc extends Element{
     private Sommet s1,s2;
     private float thickness;
-    Arc(Sommet a,Sommet b){
+    public Arc(Sommet a, Sommet b){
         super("",Color.BLACK);
         this.s1=a;
         this.s2=b;
         this.thickness=10;
     }
-    Arc(Sommet a,Sommet b,String n,Color c){
+    public Arc(Sommet a,Sommet b,String n,Color c){
         super(n,c);
         this.s1=a;
         this.s2=b;

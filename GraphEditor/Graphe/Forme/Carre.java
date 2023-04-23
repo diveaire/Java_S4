@@ -1,13 +1,15 @@
-import javax.swing.*;
+package Graphe.Forme;
+
+
 import java.awt.*;
 
 public class Carre extends Sommet{
     private int l;
-    Carre(String n,int a,int b,int c){
+    public Carre(String n,int a,int b,int c){
         super(n,a,b);
         this.l=c;
     }
-    Carre(String n,int a,int b,int c,Color d){
+    public Carre(String n,int a,int b,int c,Color d){
         super(n,a,b,d);
         this.l=c;
     }

@@ -1,10 +1,12 @@
-import javax.swing.*;
+package Graphe.Forme;
+
+
 import java.awt.*;
 
 public abstract class Element{
     private String nom;
     private Color couleur;
-    Element(String nom){
+    private Element(String nom){
         this.nom=nom;
     }
     Element(String nom,Color c){

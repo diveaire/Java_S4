@@ -1,3 +1,6 @@
+package ScreenGUI;
+
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -30,6 +33,6 @@ public class Windows extends JFrame implements ActionListener{
         
 	}
 	public static void main(String[] argv){
-        Windows g = new Windows("Graphe");
+		Windows g = new Windows("Graphe");
 	}
 }

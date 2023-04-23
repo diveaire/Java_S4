@@ -1,14 +1,16 @@
-import javax.swing.*;
+package Graphe.Forme;
+
+
 import java.awt.*;
 
 public abstract class Sommet extends Element{
     private int x,y;
-    Sommet(String n,int a, int b){
+    public Sommet(String n,int a, int b){
         super(n,Color.BLACK);
         this.x=a;
         this.y=b;
     }
-    Sommet(String n,int a, int b,Color c){
+    public Sommet(String n,int a, int b,Color c){
         super(n,c);
         this.x=a;
         this.y=b;

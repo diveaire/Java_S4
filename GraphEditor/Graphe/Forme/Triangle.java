@@ -1,11 +1,13 @@
-import javax.swing.*;
+package Graphe.Forme;
+
+
 import java.awt.*;
 
 public class Triangle extends Sommet{
     private int l;
     private int [] posx=new int[3];
     private int [] posy=new int[3];
-    Triangle(String n,int a,int b,int c){
+    public Triangle(String n,int a,int b,int c){
         super(n,a,b);
         this.l=c;
         this.posx[0]=(a+(c/2));
@@ -15,7 +17,7 @@ public class Triangle extends Sommet{
         this.posx[2]=(a+c);
         this.posy[2]=(b+c);
     }
-    Triangle(String n,int a,int b,int c,Color d){
+    public Triangle(String n,int a,int b,int c,Color d){
         super(n,a,b,d);
         this.l=c;
         this.posx[0]=(a+(c/2));

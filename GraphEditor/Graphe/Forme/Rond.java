@@ -1,13 +1,15 @@
-import javax.swing.*;
+package Graphe.Forme;
+
+
 import java.awt.*;
 
 public class Rond extends Sommet{
     private int r;
-    Rond(String n,int a,int b,int c){
+    public Rond(String n, int a, int b, int c){
         super(n,a,b);
         this.r=c;
     }
-    Rond(String n,int a,int b,int c,Color d){
+    public Rond(String n,int a,int b,int c,Color d){
         super(n,a,b,d);
         this.r=c;
     }
