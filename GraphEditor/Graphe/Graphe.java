@@ -83,6 +83,57 @@ public class Graphe implements Serializable {
         Arc x=this.getArc(a);
         this.listArc.remove(x);
     }
+        public void convertRond(Sommet s){
+        if(!(s instanceof Rond)){
+            Rond r=new Rond(s.getNom(),s.getX(),s.getY(),s.getLenght(),s.getCouleur());
+            ArrayList<Arc> linked=new ArrayList<Arc>();
+            for(Arc a : this.listArc){
+                if(a.contain(s)){
+                    linked.add(a);
+                    this.delArc(a);
+                }
+            }
+            this.delSommet(s);
+            this.addSommet(r);
+            for(Arc a1 : linked){
+                this.listArc.add(a1);
+            }
+        }
+    }
+        public void convertCarre(Sommet s){
+        if(!(s instanceof Carre)){
+            Carre c=new Carre(s.getNom(),s.getX(),s.getY(),s.getLenght(),s.getCouleur());
+            ArrayList<Arc> linked=new ArrayList<Arc>();
+            for(Arc a : this.listArc){
+                if(a.contain(s)){
+                    linked.add(a);
+                    this.delArc(a);
+                }
+            }
+            this.delSommet(s);
+            this.addSommet(c);
+            for(Arc a1 : linked){
+                this.listArc.add(a1);
+            }
+        }
+    }
+        public void convertTriangle(Sommet s){
+        if(!(s instanceof Triangle)){
+            Triangle t=new Triangle(s.getNom(),s.getX(),s.getY(),s.getLenght(),s.getCouleur());
+            ArrayList<Arc> linked=new ArrayList<Arc>();
+            for(Arc a : this.listArc){
+                if(a.contain(s)){
+                    linked.add(a);
+                    this.delArc(a);
+                }
+            }
+            this.delSommet(s);
+            this.addSommet(t);
+            for(Arc a1 : linked){
+                this.listArc.add(a1);
+            }
+        }
+    }
     public void paint(Graphics g){
         for(Sommet s : this.listSom){
             s.paint(g);
