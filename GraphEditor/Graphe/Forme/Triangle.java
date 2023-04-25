@@ -50,5 +50,9 @@ public class Triangle extends Sommet{
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(this.getCouleur());
         g2.fillPolygon(this.posx,this.posy,3);
+        g2.setColor(Color.BLACK);
+        Font fonte = new Font("TimesRoman ",Font.BOLD,Element.getNomDisplaySize());
+        g2.setFont(fonte);
+        g2.drawString(this.getNom(),this.getX(),this.getY());
     }
 }
