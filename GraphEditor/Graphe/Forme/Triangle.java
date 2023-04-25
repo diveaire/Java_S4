@@ -46,6 +46,7 @@ public class Triangle extends Sommet{
         return this.getY()+(this.l/2);
     }
     public void paint(Graphics g){
+        this.setLenght(this.l);
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(this.getCouleur());
         g2.fillPolygon(this.posx,this.posy,3);

@@ -229,7 +229,12 @@ public class Dessin extends JPanel implements MouseListener{
                 }
             }
         }
-    }  
+    }
+    public void setNewGraph(){
+        this.graphe=new Graphe();
+        System.gc();
+        this.repaint();
+    }
     public void mouseEntered(MouseEvent e) {}  
     public void mouseExited(MouseEvent e) {}  
 }
