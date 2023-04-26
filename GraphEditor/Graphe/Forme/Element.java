@@ -1,3 +1,5 @@
+package Graphe.Forme;
+
 import javax.swing.*;
 import java.awt.*;
 
