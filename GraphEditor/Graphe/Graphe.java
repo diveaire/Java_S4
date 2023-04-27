@@ -1,9 +1,9 @@
 package Graphe;
 
 // PACKAGE JAVA
+import java.io.*;
 import java.util.*;
 import java.awt.*;
-import java.io.Serializable;
 // PACKAGE LOCAL
 import Graphe.Forme.*;
 
@@ -142,4 +142,33 @@ public class Graphe implements Serializable {
             a.paint(g);
         }
     }
+    public void serialize(Graphe g,String filename) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(filename);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(g);
+            out.close();
+            fileOut.close();
+            System.out.printf("Serialized data is saved in " + filename);
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+    }
+    public Graphe deserialize(String filename) {
+        Graphe g = null;
+        try {
+            FileInputStream fileIn = new FileInputStream(filename);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            g = (Graphe) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException i) {
+            i.printStackTrace();
+        } catch (ClassNotFoundException c) {
+            System.out.println("Graphe class not found");
+            c.printStackTrace();
+        }
+        return g;
+    }
 }
+

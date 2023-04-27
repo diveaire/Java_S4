@@ -2,15 +2,16 @@ package Graphe.Forme;
 
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class Arc extends Element{
+public class Arc extends Element implements Serializable {
     private Sommet s1,s2;
     private float thickness;
     public Arc(Sommet a, Sommet b){
         super("",Color.BLACK);
         this.s1=a;
         this.s2=b;
-        this.thickness=10;
+        this.thickness=1;
     }
     public Arc(Sommet a,Sommet b,String n,Color c){
         super(n,c);
@@ -44,7 +45,7 @@ public class Arc extends Element{
     }
     public void paint(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(this.getCouleur());
+        g2.setColor(this.getCouleurAff());
         g2.setStroke(new BasicStroke(this.thickness));
         g2.drawLine(this.s1.getXCenter(),this.s1.getYCenter(),this.s2.getXCenter(),this.s2.getYCenter());
     }

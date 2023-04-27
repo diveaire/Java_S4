@@ -3,26 +3,25 @@ package ScreenGUI;
 
 import javax.swing.*;
 import java.awt.event.*;
-import Graphe.*;
-import ScreenGUI.*;
+import java.io.File;
+import java.awt.Desktop;
 
 public class BarreMenu extends JMenuBar implements ActionListener{
     private boolean test=false;
     private JMenu mnuFile,mnuEdit,mnuAff,mnuHelp;
     private JMenuItem mnuNewFile, mnuOpenFile,mnuSaveFile,mnuSaveFileAs,mnuExit,mnuUndo,mnuRedo,mnuCopy,mnuCut,mnuPaste,mnuEditBar;
     Dessin D;
-    private EditBar eb;
-    public BarreMenu(Dessin D, EditBar eb) {
-        if (test){
-            return;
-        }else{
-            CreateBar(D,eb);
-            return;
+    private Windows screen;
+    public BarreMenu(Dessin D, Windows screen) {
+        if (!test) {
+            test=true;
+            CreateBar(D, screen);
         }
+        return;
     }
-    private void CreateBar(Dessin d,EditBar eb){
+    private void CreateBar(Dessin d, Windows screen){
         this.D = d;
-        this.eb = eb;
+        this.screen = screen;
         //SECTION MENU FILE
         mnuFile = new JMenu( "File" );
         mnuFile.setMnemonic( 'F' );
@@ -37,7 +36,7 @@ public class BarreMenu extends JMenuBar implements ActionListener{
         mnuFile.addSeparator();
 
         //SOUS SECTION OpenFile
-        mnuOpenFile = new JMenuItem( "Open File (CTRL + O)" );
+        mnuOpenFile = new JMenuItem( "Open File" );
         mnuOpenFile.setIcon( new ImageIcon( "Files/Icons/open.png" ) );
         mnuOpenFile.setMnemonic( 'O' );
         mnuOpenFile.setAccelerator( KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK) ); //CTRL + O
@@ -45,14 +44,14 @@ public class BarreMenu extends JMenuBar implements ActionListener{
         mnuFile.add(mnuOpenFile);
 
         //SOUS SECTION saveFile
-        mnuSaveFile = new JMenuItem( "Save File (CTRL+S)" );
+        mnuSaveFile = new JMenuItem( "Save File" );
         mnuSaveFile.setIcon( new ImageIcon( "Files/Icons/save.png" ) );
         mnuSaveFile.setMnemonic( 'S' );
         mnuSaveFile.setAccelerator( KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK) ); //CTRL + S
         mnuSaveFile.addActionListener(this::mnuSaveList);
         mnuFile.add(mnuSaveFile);
 
-        mnuSaveFileAs = new JMenuItem( "Save File As (CTRL+Shift+S)" );
+        mnuSaveFileAs = new JMenuItem( "Save File As" );
         mnuSaveFileAs.setIcon( new ImageIcon( "Files/Icons/save_as.png" ) );
         mnuSaveFileAs.addActionListener(this::mnuSaveAsList);
         mnuSaveFileAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,KeyEvent.SHIFT_DOWN_MASK | KeyEvent.CTRL_DOWN_MASK) ); //CTRL + shift + S
@@ -60,7 +59,7 @@ public class BarreMenu extends JMenuBar implements ActionListener{
 
         mnuFile.addSeparator();
 
-        mnuExit = new JMenuItem( "Exit (ALT+F4)" );
+        mnuExit = new JMenuItem( "Exit" );
         mnuExit.setIcon( new ImageIcon( "Files/Icons/exit.png" ) );
         mnuExit.setMnemonic( 'x' );
         mnuExit.setAccelerator( KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_DOWN_MASK) );
@@ -116,7 +115,7 @@ public class BarreMenu extends JMenuBar implements ActionListener{
         mnuAff = new JMenu("Affichage");
         mnuEditBar = new JMenuItem("Afficher EditBar");
         mnuEditBar.setIcon( new ImageIcon( "..." ) );
-        mnuEditBar.setAccelerator( KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK) );
+        mnuEditBar.setAccelerator( KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK) );
         mnuEditBar.addActionListener(this::mnuEditBarList);
         mnuAff.add(mnuEditBar);
 
@@ -134,16 +133,35 @@ public class BarreMenu extends JMenuBar implements ActionListener{
         //Windows.getInstance().addDessin(g);
     }
     public void mnuOpenList( ActionEvent event ) {
-        JOptionPane.showMessageDialog(this,"Open file clicked !");
+        JFileChooser chooser = new JFileChooser();
+        int resultat = chooser.showOpenDialog(screen);
+        if(resultat == JFileChooser.APPROVE_OPTION) {
+            // Ouverture du fichier sélectionné avec Desktop
+            File fichier = chooser.getSelectedFile();
+            if(fichier.exists()) {
+                try {
+                    Desktop.getDesktop().open(fichier);
+                } catch(Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
     public void mnuSaveList( ActionEvent event ) {
-        JOptionPane.showMessageDialog(this,"Save clicked !");
+        // Appel de la méthode serialize avec le nom du fichier par défaut
+        String filename = "save.ser";
+        screen.d.getGraphe().serialize(screen.d.getGraphe(), filename);
     }
     public void mnuSaveAsList(ActionEvent event) {
-        JOptionPane.showMessageDialog(this,"SaveAs clicked !");
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showSaveDialog(screen) == JFileChooser.APPROVE_OPTION) {
+            // Appel de la méthode serialize avec le nom de fichier choisi
+            String filename = fileChooser.getSelectedFile().getAbsolutePath();
+            screen.d.getGraphe().serialize(screen.d.getGraphe(), filename);
+        }
     }
     public void mnuExitList(ActionEvent event) {
-        JOptionPane.showMessageDialog(this,"Exit clicked !");
+        System.exit(0);
     }
     public void mnuUndoList(ActionEvent event) {
         JOptionPane.showMessageDialog(this,"Undo clicked !");
@@ -161,7 +179,7 @@ public class BarreMenu extends JMenuBar implements ActionListener{
         JOptionPane.showMessageDialog(this,"Paste clicked !");
     }
     public void mnuEditBarList(ActionEvent event) {
-        eb.showEditBar();
+        screen.infosBar.showEditBar();
     }
 
     @Override

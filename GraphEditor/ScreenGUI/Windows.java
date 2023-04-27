@@ -5,61 +5,47 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class Windows extends JFrame implements ActionListener{
-	private static Windows instance;
+public class Windows extends JFrame {
     protected Dessin d;
 	protected BarreOutils toolBar;
 	protected BarreMenu uperBar;
-	protected EditBar editBar;
+	protected InfosBar infosBar;
 	Windows(){
 		super("Graphe");
+
+		/* Parametres de la fenetre */
 		this.setLayout(new BorderLayout());
-		/*Initialisation de notre panel*/
-		this.d=new Dessin();
+		this.setSize(1980,1080);
 
-		this.editBar = new EditBar(this.d);
-		this.add(editBar,BorderLayout.EAST);
+		/*Initialisation de notre panel de dessin*/
+		this.d=new Dessin(this);
 
-		/*Création de la barre de menu */
-		this.uperBar=new BarreMenu(this.d,this.editBar);
+
+		this.infosBar = new InfosBar(false,this.d);
+
+		/* Création de la barre de menu */
+		this.uperBar=new BarreMenu(this.d,this);
 		this.setJMenuBar(uperBar);
 
-		/*Création de la barre d'outil*/
+
+		/* Création de la barre d'outil */
 		this.toolBar=new BarreOutils("Propriétés",this.d);
 
-		/*Placement des composants*/
+		/* Placement des composants */
+		this.add(infosBar,BorderLayout.EAST);
         this.add(d,BorderLayout.CENTER);
-		this.add(toolBar,BorderLayout.WEST);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setSize(1980,1080);
+		this.add(toolBar,BorderLayout.NORTH);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
-	//permet de lancer une nouvelle instance de la fenêtre
-	public static Windows getInstance() {
-		if (instance == null) {
-			instance = new Windows();
-		}
-		return instance;
+
+	void updateBar(){
+		//On update l'info barre dans la windows
+		this.infosBar.update();
+		//on valide les changements
+		this.infosBar.revalidate();
+		this.infosBar.repaint();
 	}
-	/*
-	public void showHideEditBar() {
-		if (editBar == null){
-			//fenetre n'existe pas'
-			editBar = new EditBar();
-			this.add(editBar, BorderLayout.EAST);
-			editBar.setText("Masquer EditBar");
-		} else {
-			//fenetre presente
-			//remove(editBar);
-			editBar = null;
-			mnuEditBar.setText("Afficher EditBar");
-		}
-	}*/
-	void addDessin(Dessin dessin){
-		this.d=dessin;
-	}
-	@Override
-	public void actionPerformed(ActionEvent e) {    }
 	public static void main(String[] argv){
 		Windows g = new Windows();
 	}

@@ -2,7 +2,7 @@ package ScreenGUI;
 
 // PACKAGES JAVA
 import java.awt.*;
-import java.awt.event.*;  
+import java.awt.event.*;
 import javax.swing.*;
 // PACKAGES LOCAL
 import Graphe.*;
@@ -13,7 +13,8 @@ public class Dessin extends JPanel implements MouseListener{
     private String type;
     private Sommet selSom,pselSom,movedSom;
     private Arc selArc;
-    public Dessin(){
+    private Windows fenetre;
+    public Dessin(Windows W){
         this.graphe=new Graphe();
         this.size=20;
         this.type="Aucun";
@@ -21,7 +22,14 @@ public class Dessin extends JPanel implements MouseListener{
         this.pselSom=null;
         this.movedSom=null;
         this.selArc=null;
+        this.fenetre=W;
         addMouseListener(this);
+    }
+    public void setWindow(Windows win) {
+        this.fenetre=win;
+    }
+    public Windows getWindow() {
+        return this.fenetre ;
     }
     public Graphe getGraphe(){
         return this.graphe;
@@ -40,6 +48,9 @@ public class Dessin extends JPanel implements MouseListener{
     }
     public Sommet getSelSom(){
         return this.selSom;
+    }
+    public Sommet getPSelSom(){
+        return this.pselSom;
     }
     public void setSelSom(Sommet s){
         this.selSom=s;
@@ -93,7 +104,7 @@ public class Dessin extends JPanel implements MouseListener{
                 Sommet pointed=this.graphe.getSommet(new Rond("",e.getX(),e.getY(),this.size));
                 if(this.selSom==null){
                     this.selSom=pointed;
-                    pointed.setCouleur(Color.GREEN);
+                    pointed.setCouleurAff(pointed.getCouleurSelect());
                     this.repaint();
                 }
                 else if(this.selSom.equals(pointed)){
@@ -104,9 +115,9 @@ public class Dessin extends JPanel implements MouseListener{
                     else{
                         this.selSom=null;
                     }
-                    pointed.setCouleur(Color.BLACK);
+                    pointed.setCouleurAff(pointed.getCouleur());
                     if (this.selArc!=null){
-                        this.selArc.setCouleur(Color.BLACK);
+                        this.selArc.setCouleurAff(this.selArc.getCouleur());
                         this.selArc=null;
                     }
                     this.repaint();
@@ -114,33 +125,35 @@ public class Dessin extends JPanel implements MouseListener{
                 else if(this.pselSom==null){
                     this.pselSom=pointed;
                     this.graphe.addArc(this.selSom,this.pselSom);
-                    pointed.setCouleur(Color.GREEN);
+                    pointed.setCouleurAff(pointed.getCouleurSelect());
                     this.repaint();
                 }
                 else if(this.pselSom.equals(pointed)){
                     this.pselSom=null;
-                    pointed.setCouleur(Color.BLACK);
+                    pointed.setCouleurAff(pointed.getCouleur());
                     if (this.selArc!=null){
-                        this.selArc.setCouleur(Color.BLACK);
+                        this.selArc.setCouleur(this.selArc.getCouleur());
                         this.selArc=null;
                     }
                     this.repaint();
                 }
                 else{
-                    this.selSom.setCouleur(Color.BLACK);
+                    this.selSom.setCouleurAff(pointed.getCouleur());
                     this.selSom=this.pselSom;
                     this.pselSom=pointed;
                     this.graphe.addArc(this.selSom,this.pselSom);
-                    pointed.setCouleur(Color.GREEN);
+                    pointed.setCouleurAff(pointed.getCouleurSelect());
+
                     if (this.selArc!=null){
-                        this.selArc.setCouleur(Color.BLACK);
+                        this.selArc.setCouleur(this.selArc.getCouleur());
                         this.selArc=null;
                     }
                     this.repaint();
                 }
+                //arc ou sommet
                 if (this.selSom!=null && this.pselSom!=null && this.graphe.isArcInList(new Arc(this.selSom,this.pselSom))){
                     this.setSelArc();
-                    this.selArc.setCouleur(Color.GREEN);
+                    this.selArc.setCouleur(this.selArc.getCouleurSelect());
                     this.repaint();
                 }
                 this.movedSom=null;
@@ -166,11 +179,11 @@ public class Dessin extends JPanel implements MouseListener{
                 }
                 else{
                     if(this.selSom!=null){
-                        this.selSom.setCouleur(Color.BLACK);
+                        this.selSom.setCouleurAff(this.selSom.getCouleur());
                         if(this.pselSom!=null){
-                            this.pselSom.setCouleur(Color.BLACK);
+                            this.pselSom.setCouleurAff(this.selSom.getCouleur());
                             if(this.selArc!=null){
-                                this.selArc.setCouleur(Color.BLACK);
+                                this.selArc.setCouleurAff(this.selSom.getCouleur());
                             }
                         }
                         this.repaint();
@@ -179,8 +192,6 @@ public class Dessin extends JPanel implements MouseListener{
                         this.selArc=null;
                     }
                 }
-                
-                
             }
         }
         else if((e.getButton()==MouseEvent.BUTTON3)&&(graphe.isSommetInList(new Rond("",e.getX(),e.getY(),this.size)))){
@@ -208,6 +219,7 @@ public class Dessin extends JPanel implements MouseListener{
             this.graphe.delSommet(pointed);
             this.repaint();
         }
+        fenetre.updateBar();
     }
     public void mousePressed(MouseEvent e){
         if(e.getButton()==MouseEvent.BUTTON1){

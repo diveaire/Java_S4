@@ -27,7 +27,7 @@ public class Carre extends Sommet{
     }
     public void paint(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(this.getCouleur());
+        g2.setColor(this.getCouleurAff());
         g2.fill3DRect(this.getX(),this.getY(),this.l,this.l,false);
         g2.setColor(Color.BLACK);
         Font fonte = new Font("TimesRoman ",Font.BOLD,Element.getNomDisplaySize());
