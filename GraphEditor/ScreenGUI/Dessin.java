@@ -7,9 +7,9 @@ import javax.swing.*;
 // PACKAGES LOCAL
 import Graphe.*;
 import Graphe.Forme.*;
-public class Dessin extends JPanel implements MouseListener{
+public class Dessin extends JPanel implements MouseListener,MouseMotionListener {
     private Graphe graphe;
-    private int size;
+    private int size,movedX,movedY;
     private String type;
     private Sommet selSom,pselSom,movedSom;
     private Arc selArc;
@@ -24,6 +24,7 @@ public class Dessin extends JPanel implements MouseListener{
         this.selArc=null;
         this.fenetre=W;
         addMouseListener(this);
+        addMouseMotionListener(this);
     }
     public void setWindow(Windows win) {
         this.fenetre=win;
@@ -100,8 +101,16 @@ public class Dessin extends JPanel implements MouseListener{
     public void paintComponent(Graphics g){
         super.paintComponent(g); 
         this.graphe.paint(g);
+        if(this.movedSom!=null){
+            g.setColor(Color.LIGHT_GRAY);
+            Graphics2D g2 = (Graphics2D) g;
+            this.movedSom.setX(this.movedX-this.movedSom.getLenght()/2);
+            this.movedSom.setY(this.movedY-this.movedSom.getLenght()/2);
+            this.movedSom.paint(g);
+        }
     }
     public void mouseClicked(MouseEvent e){
+        this.movedSom=null;
         if(e.getButton()==MouseEvent.BUTTON1){
             if(this.graphe.isSommetInList(new Rond("",e.getX(),e.getY(),this.size))){
                 Sommet pointed=this.graphe.getSommet(new Rond("",e.getX(),e.getY(),this.size));
@@ -159,7 +168,6 @@ public class Dessin extends JPanel implements MouseListener{
                     this.selArc.setCouleur(this.selArc.getCouleurSelect());
                     this.repaint();
                 }
-                this.movedSom=null;
             }
             else{
                 if(this.type!="Aucun"){
@@ -230,6 +238,9 @@ public class Dessin extends JPanel implements MouseListener{
                 if(this.movedSom==null){
                     this.movedSom=this.graphe.getSommet(new Rond("",e.getX(),e.getY(),this.size));
                 }
+                else if(this.movedSom!=null){
+                    this.movedSom=null;
+                }
             }
         }
     }  
@@ -245,6 +256,18 @@ public class Dessin extends JPanel implements MouseListener{
             }
         }
     }
+
+    public void mouseMoved(MouseEvent e) {
+    }
+
+    public void mouseDragged(MouseEvent e) {
+        if(this.movedSom!=null){
+            this.movedX= e.getX();
+            this.movedY= e.getY();
+            this.repaint();
+        }
+    }
+
     public void setNewGraph(){
         this.graphe=new Graphe();
         System.gc();
