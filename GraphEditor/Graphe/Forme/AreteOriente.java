@@ -46,7 +46,17 @@ public class AreteOriente extends Arc {
         int ay = (int)(destY-this.longueur*Math.sin(deg-Math.PI/6));
         int bx = (int)(destX-this.longueur*Math.cos(deg+Math.PI/6));
         int by = (int)(destY-this.longueur*Math.sin(deg+Math.PI/6));
-        g2.drawLine(destX, destY, ax, ay);
-        g2.drawLine(destX, destY, bx, by);
+
+        int [] posx=new int[3];
+        int [] posy=new int[3];
+        posx[0]=destX;
+        posy[0]=destY;
+        posx[1]=ax;
+        posy[1]=ay;
+        posx[2]=bx;
+        posy[2]=by;
+
+        g2.fillPolygon(posx,posy,3);
+       
     }
 }
