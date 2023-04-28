@@ -34,6 +34,9 @@ public class Dessin extends JPanel implements MouseListener{
     public Graphe getGraphe(){
         return this.graphe;
     }
+    public void setGraphe(Graphe g){
+        this.graphe=g;
+    }
     public String getType(){
         return this.type;
     }
