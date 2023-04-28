@@ -10,6 +10,7 @@ import Graphe.Forme.*;
 public class Dessin extends JPanel implements MouseListener,MouseMotionListener {
     private Graphe graphe;
     private int size,movedX,movedY;
+    private boolean orientedArc;
     private String type;
     private Sommet selSom,pselSom,movedSom;
     private Arc selArc;
@@ -22,6 +23,7 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         this.pselSom=null;
         this.movedSom=null;
         this.selArc=null;
+        this.orientedArc=false;
         this.fenetre=W;
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -72,7 +74,7 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         return this.selArc;
     }
     public void setSelArc(){
-        this.selArc=this.graphe.getArc(new Arc(this.selSom,this.pselSom));
+        this.selArc=this.graphe.getArc(new Arete(this.selSom,this.pselSom));
     }
     public void delSelArc(){
         if(this.selArc!=null){
@@ -82,6 +84,12 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
                 this.selArc=null;
             }
         }
+    }
+    public boolean getOrientedArc(){
+        return this.orientedArc;
+    }
+    public void setOrientedArc(boolean r){
+        this.orientedArc=r;
     }
     public String askName(){
         String x= JOptionPane.showInputDialog(this, "Nommez le nouvel élément :");
@@ -136,7 +144,12 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
                 }
                 else if(this.pselSom==null){
                     this.pselSom=pointed;
-                    this.graphe.addArc(this.selSom,this.pselSom);
+                    if(this.orientedArc){
+                        this.graphe.addArc(new AreteOriente(this.selSom,this.pselSom));
+                    }
+                    else{
+                        this.graphe.addArc(new Arete(this.selSom,this.pselSom));
+                    }
                     pointed.setCouleurAff(pointed.getCouleurSelect());
                     this.repaint();
                 }
@@ -153,7 +166,12 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
                     this.selSom.setCouleurAff(pointed.getCouleur());
                     this.selSom=this.pselSom;
                     this.pselSom=pointed;
-                    this.graphe.addArc(this.selSom,this.pselSom);
+                    if(this.orientedArc){
+                        this.graphe.addArc(new AreteOriente(this.selSom,this.pselSom));
+                    }
+                    else{
+                        this.graphe.addArc(new Arete(this.selSom,this.pselSom));
+                    }
                     pointed.setCouleurAff(pointed.getCouleurSelect());
 
                     if (this.selArc!=null){
@@ -163,7 +181,7 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
                     this.repaint();
                 }
                 //arc ou sommet
-                if (this.selSom!=null && this.pselSom!=null && this.graphe.isArcInList(new Arc(this.selSom,this.pselSom))){
+                if (this.selSom!=null && this.pselSom!=null && this.graphe.isArcInList(new Arete(this.selSom,this.pselSom))){
                     this.setSelArc();
                     this.selArc.setCouleur(this.selArc.getCouleurSelect());
                     this.repaint();
