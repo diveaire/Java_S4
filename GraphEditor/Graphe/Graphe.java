@@ -36,13 +36,15 @@ public class Graphe implements Serializable {
     public boolean isAvailableName(String n){
         boolean x=true;
         for(Sommet s : this.listSom){
-            if(n.equals(s.getNom())){
-                x=false;
+            if (n.equals(s.getNom())) {
+                x = false;
+                break;
             }
         }
         for(Arc a : this.listArc){
-            if(n.equals(a.getNom())){
-                x=false;
+            if (n.equals(a.getNom())) {
+                x = false;
+                break;
             }
         }
         return x;

@@ -24,9 +24,6 @@ public abstract class Element{
     public void setNom(String n){
         this.nom=n;
     }
-    static public void setNomDisplaySize(int n){
-        nomDisplaySize=n;
-    }
     public void setCouleur(Color a){
         this.couleur=a;
     }
@@ -47,6 +44,9 @@ public abstract class Element{
     }
     public String getNom(){
         return this.nom;
+    }
+    static public void setNomDisplaySize(int n){
+        nomDisplaySize=n;
     }
     static public int getNomDisplaySize(){
         return nomDisplaySize;
