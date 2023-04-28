@@ -261,13 +261,8 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
     }  
     public void mouseReleased(MouseEvent e){
         if(e.getButton()==MouseEvent.BUTTON1){
-            if(!this.graphe.isSommetInList(new Rond("",e.getX(),e.getY(),this.size))){
-                if(this.movedSom!=null){
-                    this.movedSom.setX(e.getX()-this.movedSom.getLenght()/2);
-                    this.movedSom.setY(e.getY()-this.movedSom.getLenght()/2);
-                    this.movedSom=null;
-                    this.repaint();
-                }
+            if(this.movedSom!=null){
+                this.movedSom=null;
             }
         }
     }
