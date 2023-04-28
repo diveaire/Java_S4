@@ -1,9 +1,10 @@
 package Graphe.Forme;
 
+import java.io.*;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class Element{
+public abstract class Element implements Serializable{
     private String nom;
     private static int nomDisplaySize=15;
     private Color couleurAff,couleur,couleurSelect;
