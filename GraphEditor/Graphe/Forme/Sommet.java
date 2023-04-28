@@ -39,5 +39,4 @@ public abstract class Sommet extends Element{
     public abstract void setLenght(int a);
     public abstract int getXCenter();
     public abstract int getYCenter();
-    public abstract void paint(Graphics g);
 }

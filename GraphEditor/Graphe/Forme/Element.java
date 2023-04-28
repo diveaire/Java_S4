@@ -52,4 +52,5 @@ public abstract class Element implements Serializable{
     static public int getNomDisplaySize(){
         return nomDisplaySize;
     }
+    public abstract void paint(Graphics g);
 }
