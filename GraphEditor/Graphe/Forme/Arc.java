@@ -8,13 +8,19 @@ public class Arc extends Element implements Serializable {
     private Sommet s1,s2;
     private float thickness;
     public Arc(Sommet a, Sommet b){
-        super("",Color.BLACK);
+        super("",Color.BLACK,Color.GREEN);
         this.s1=a;
         this.s2=b;
         this.thickness=1;
     }
     public Arc(Sommet a,Sommet b,String n,Color c){
-        super(n,c);
+        super(n,c,Color.GREEN);
+        this.s1=a;
+        this.s2=b;
+        this.thickness=1;
+    }
+    public Arc(Sommet a,Sommet b,String n,Color c, Color c2){
+        super(n,c,c2);
         this.s1=a;
         this.s2=b;
         this.thickness=1;

@@ -9,11 +9,15 @@ public abstract class Element{
     private Color couleurAff,couleur,couleurSelect;
     Element(String nom){
         this.nom=nom;
+        this.couleur=Color.BLACK;
+        this.couleurAff=Color.BLACK;
+        this.couleurSelect=Color.GREEN;
     }
     Element(String nom,Color c){
         this.nom=nom;
         this.couleur=c;
         this.couleurAff=c;
+        this.couleurSelect=Color.GREEN;
     }
     Element(String nom,Color c,Color c2){
         this.nom=nom;
@@ -51,4 +55,5 @@ public abstract class Element{
     static public int getNomDisplaySize(){
         return nomDisplaySize;
     }
+
 }

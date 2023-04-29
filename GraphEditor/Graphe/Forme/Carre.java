@@ -13,6 +13,10 @@ public class Carre extends Sommet{
         super(n,a,b,d);
         this.l=c;
     }
+    public Carre(String n,int a,int b,int c,Color d,Color d2){
+        super(n,a,b,d,d2);
+        this.l=c;
+    }
     public void setLenght(int a){
         this.l=a;
     }
@@ -29,7 +33,6 @@ public class Carre extends Sommet{
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(this.getCouleurAff());
         g2.fill3DRect(this.getX(),this.getY(),this.l,this.l,false);
-        g2.setColor(Color.BLACK);
         Font fonte = new Font("TimesRoman ",Font.BOLD,Element.getNomDisplaySize());
         g2.setFont(fonte);
         g2.drawString(this.getNom(),this.getX(),this.getY());

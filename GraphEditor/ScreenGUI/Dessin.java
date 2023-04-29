@@ -126,13 +126,15 @@ public class Dessin extends JPanel implements MouseListener{
                     this.pselSom=pointed;
                     this.graphe.addArc(this.selSom,this.pselSom);
                     pointed.setCouleurAff(pointed.getCouleurSelect());
+                    this.setSelArc();
+                    this.selArc.setCouleurAff(this.selArc.getCouleurSelect());
                     this.repaint();
                 }
                 else if(this.pselSom.equals(pointed)){
                     this.pselSom=null;
                     pointed.setCouleurAff(pointed.getCouleur());
                     if (this.selArc!=null){
-                        this.selArc.setCouleur(this.selArc.getCouleur());
+                        this.selArc.setCouleurAff(this.selArc.getCouleur());
                         this.selArc=null;
                     }
                     this.repaint();
@@ -145,20 +147,20 @@ public class Dessin extends JPanel implements MouseListener{
                     pointed.setCouleurAff(pointed.getCouleurSelect());
 
                     if (this.selArc!=null){
-                        this.selArc.setCouleur(this.selArc.getCouleur());
+                        this.selArc.setCouleurAff(this.selArc.getCouleur());
                         this.selArc=null;
                     }
                     this.repaint();
                 }
-                //arc ou sommet
+                //ajouter arc
                 if (this.selSom!=null && this.pselSom!=null && this.graphe.isArcInList(new Arc(this.selSom,this.pselSom))){
                     this.setSelArc();
-                    this.selArc.setCouleur(this.selArc.getCouleurSelect());
+                    this.selArc.setCouleurAff(this.selArc.getCouleurSelect());
                     this.repaint();
                 }
                 this.movedSom=null;
             }
-            else{
+            else{//Clic pour créer un sommet
                 if(this.type!="Aucun"){
                     String n=this.askName();
                     if(n!="ERROR"){
@@ -177,13 +179,13 @@ public class Dessin extends JPanel implements MouseListener{
                     }
                     
                 }
-                else{
+                else{// clic sur ecran pour désélectionné
                     if(this.selSom!=null){
                         this.selSom.setCouleurAff(this.selSom.getCouleur());
                         if(this.pselSom!=null){
-                            this.pselSom.setCouleurAff(this.selSom.getCouleur());
+                            this.pselSom.setCouleurAff(this.pselSom.getCouleur());
                             if(this.selArc!=null){
-                                this.selArc.setCouleurAff(this.selSom.getCouleur());
+                                this.selArc.setCouleurAff(this.selArc.getCouleur());
                             }
                         }
                         this.repaint();
@@ -197,25 +199,25 @@ public class Dessin extends JPanel implements MouseListener{
         else if((e.getButton()==MouseEvent.BUTTON3)&&(graphe.isSommetInList(new Rond("",e.getX(),e.getY(),this.size)))){
             Sommet pointed=this.graphe.getSommet(new Rond("",e.getX(),e.getY(),this.size));
             if(this.selSom!=null && this.selSom.equals(pointed)){
-                if(this.pselSom!=null){
+                if(this.pselSom!=null){//désélection du 2ème sommet
                     this.selSom=this.pselSom;
                     this.pselSom=null;
                 }
-                else{
+                else{ //désélection d'un sommet
                     this.selSom=null;
                 }
                 if (this.selArc!=null){
-                    this.selArc.setCouleur(Color.BLACK);
+                    this.selArc.setCouleurAff(this.selArc.getCouleur());
                     this.selArc=null;
                 }
             }
             else if(this.pselSom!=null && this.pselSom.equals(pointed)){
                 this.pselSom=null;
                 if (this.selArc!=null){
-                    this.selArc.setCouleur(Color.BLACK);
+                    this.selArc.setCouleurAff(this.selArc.getCouleur());
                     this.selArc=null;
                 }
-            }
+            }// supprimer un sommet du graphe
             this.graphe.delSommet(pointed);
             this.repaint();
         }

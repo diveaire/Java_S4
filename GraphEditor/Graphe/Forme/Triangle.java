@@ -27,6 +27,16 @@ public class Triangle extends Sommet{
         this.posx[2]=(a+c);
         this.posy[2]=(b+c);
     }
+    public Triangle(String n,int a,int b,int c,Color d, Color d2){
+        super(n,a,b,d,d2);
+        this.l=c;
+        this.posx[0]=(a+(c/2));
+        this.posy[0]=b;
+        this.posx[1]=a;
+        this.posy[1]=(b+c);
+        this.posx[2]=(a+c);
+        this.posy[2]=(b+c);
+    }
     public void setLenght(int a){
         this.l=a;
         this.posx[0]=(this.getX()+(this.l/2));
@@ -50,7 +60,6 @@ public class Triangle extends Sommet{
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(this.getCouleurAff());
         g2.fillPolygon(this.posx,this.posy,3);
-        g2.setColor(Color.BLACK);
         Font fonte = new Font("TimesRoman ",Font.BOLD,Element.getNomDisplaySize());
         g2.setFont(fonte);
         g2.drawString(this.getNom(),this.getX(),this.getY());

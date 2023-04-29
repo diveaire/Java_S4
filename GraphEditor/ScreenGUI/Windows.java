@@ -5,11 +5,30 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
+/**
+ * Fenêtre d'application pour le graph-Editor.
+ */
 public class Windows extends JFrame {
-    protected Dessin d;
+	/**
+	 * Le dessin affiché sur la fenêtre d'application
+	 */
+	protected Dessin d;
+	/**
+	 * La barre d'outil permettant de choisir l'outil d'application du graphe
+	 */
 	protected BarreOutils toolBar;
+	/**
+	 * La barre de menu de l'application pour intégrer les fonctionnalités
+	 */
 	protected BarreMenu uperBar;
+	/**
+	 * La barre d'infos/modifications des composants
+	 */
 	protected InfosBar infosBar;
+
+	/**
+	 * Instantiates a new Windows.
+	 */
 	Windows(){
 		super("Graphe");
 
@@ -39,6 +58,9 @@ public class Windows extends JFrame {
 		this.setVisible(true);
 	}
 
+	/**
+	 * mise à jour de l'infos barre
+	 */
 	void updateBar(){
 		//On update l'info barre dans la windows
 		this.infosBar.update();
@@ -46,6 +68,12 @@ public class Windows extends JFrame {
 		this.infosBar.revalidate();
 		this.infosBar.repaint();
 	}
+
+	/**
+	 * Main.
+	 *
+	 * @param argv the argv
+	 */
 	public static void main(String[] argv){
 		Windows g = new Windows();
 	}

@@ -1,11 +1,17 @@
 package ScreenGUI;
 
 
+import Graphe.Forme.*;
+
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.awt.Desktop;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BarreMenu extends JMenuBar implements ActionListener{
     private boolean test=false;
@@ -13,6 +19,7 @@ public class BarreMenu extends JMenuBar implements ActionListener{
     private JMenuItem mnuNewFile, mnuOpenFile,mnuSaveFile,mnuSaveFileAs,mnuExit,mnuUndo,mnuRedo,mnuCopy,mnuCut,mnuPaste,mnuEditBar,mnuHelpBar;
     Dessin D;
     private Windows screen;
+    private Map<String, Object> clipboard = new HashMap<>();
     public BarreMenu(Dessin D, Windows screen) {
         if (!test) {
             test=true;
@@ -127,7 +134,7 @@ public class BarreMenu extends JMenuBar implements ActionListener{
         mnuHelp = new JMenu( "Aide" );
         mnuHelpBar = new JMenuItem("Read-Me");
         mnuHelpBar.addActionListener(this::mnuHelpList);
-        mnuEditBar.setAccelerator( KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK) );
+        mnuHelpBar.setAccelerator( KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK) );
         mnuHelp.add(mnuHelpBar);
         add( mnuHelp );
     }
@@ -181,13 +188,36 @@ public class BarreMenu extends JMenuBar implements ActionListener{
 
     */
     public void mnuCopyList(ActionEvent event) {
-        JOptionPane.showMessageDialog(this,"Copy clicked !");
+        // Copie l'élément sélectionné dans le presse-papiers
+        Sommet element = this.D.getSelSom();
+        if (element != null){
+            clipboard.clear();
+            clipboard.put("type",element.getClass().getName());
+            clipboard.put("x", element.getX());
+            clipboard.put("y", element.getY());
+            clipboard.put("l", element.getLenght());
+            clipboard.put("color", element.getCouleur());
+            clipboard.put("colorSelect", element.getCouleurSelect());
+        }
+        JOptionPane.showMessageDialog(this,"Copie effectuer !");
     }
     public void mnuCutList(ActionEvent event) {
-        JOptionPane.showMessageDialog(this,"Cut clicked !");
+        mnuCopyList(event);
+        this.D.getGraphe().delSommet(this.D.getSelSom());
+        this.D.repaint();
     }
     public void mnuPasteList(ActionEvent event) {
-        JOptionPane.showMessageDialog(this,"Paste clicked !");
+        // Colle l'élément du presse-papiers en demandant un nom
+        String name = D.askName();
+        //System.out.println(clipboard.get("type"));
+        if (clipboard.get("type").equals("Graphe.Forme.Rond")){
+            this.D.getGraphe().addSommet(new Rond(name,(int) clipboard.get("x")+50,(int)clipboard.get("y")+50,(int)clipboard.get("l"),(Color) clipboard.get("color"),(Color) clipboard.get("colorSelect")));
+        } else if (clipboard.get("type").equals("Graphe.Forme.Carre")) {
+            this.D.getGraphe().addSommet(new Carre(name,(int) clipboard.get("x")+50,(int)clipboard.get("y")+50,(int)clipboard.get("l"),(Color) clipboard.get("color"),(Color) clipboard.get("colorSelect")));
+        }else if (clipboard.get("type").equals("Graphe.Forme.Triangle")) {
+            this.D.getGraphe().addSommet(new Triangle(name,(int) clipboard.get("x")+50,(int)clipboard.get("y")+50,(int)clipboard.get("l"),(Color) clipboard.get("color"),(Color) clipboard.get("colorSelect")));
+        }
+        this.D.repaint();
     }
     public void mnuEditBarList(ActionEvent event) {
         screen.infosBar.showEditBar();
@@ -210,7 +240,6 @@ public class BarreMenu extends JMenuBar implements ActionListener{
             }
         }
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {    }
 }

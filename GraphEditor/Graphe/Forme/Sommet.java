@@ -6,12 +6,12 @@ import java.awt.*;
 public abstract class Sommet extends Element{
     private int x,y;
     public Sommet(String n,int a, int b){
-        super(n,Color.BLACK,Color.GREEN);
+        super(n);
         this.x=a;
         this.y=b;
     }
     public Sommet(String n,int a, int b,Color c){
-        super(n,c,Color.GREEN);
+        super(n,c);
         this.x=a;
         this.y=b;
     }
