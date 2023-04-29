@@ -4,16 +4,20 @@ package Graphe;
 import java.io.*;
 import java.util.*;
 import java.awt.*;
+
 // PACKAGE LOCAL
 import Graphe.Forme.*;
 
 public class Graphe implements Serializable {
-    private ArrayList<Sommet> listSom;
-    public ArrayList<Arc> listArc;
+    /* Attributs */
+    private ArrayList<Sommet> listSom; // La liste des sommets constituant le graphe
+    public ArrayList<Arc> listArc; // La liste des arcs constituant le graphe
+    /* Constructeurs */
     public Graphe(){
         this.listSom=new ArrayList<Sommet>();
         this.listArc=new ArrayList<Arc>();
     }
+    /* Méthodes */
     public void addSommet(Sommet s){
         if(!isSommetInList(s)){
             this.listSom.add(s);
@@ -34,6 +38,7 @@ public class Graphe implements Serializable {
         return !(x==null);
     }
     public boolean isAvailableName(String n){
+        /* Si l'un des éléments du graphe contient ce nom on renvoie faux */
         boolean x=true;
         for(Sommet s : this.listSom){
             if (n.equals(s.getNom())) {
@@ -52,12 +57,14 @@ public class Graphe implements Serializable {
     }
     public void delSommet(Sommet s){
         Sommet x=this.getSommet(s);
+        /* On créer une liste de suppression contenant tous les arc à supprimer c'est à dire contenant le sommet s */
         ArrayList<Arc> delListe=new ArrayList<Arc>();
         for(Arc a : this.listArc){
             if(a.contain(x)){
                 delListe.add(a);
             }
         }
+        /* On supprime ensuite tous les arcs de la liste de suppression */
         for(Arc a : delListe){
             this.listArc.remove(a);
         }
@@ -85,14 +92,20 @@ public class Graphe implements Serializable {
         Arc x=this.getArc(a);
         this.listArc.remove(x);
     }
-        public void convertRond(Sommet s){
-        if(!(s instanceof Rond)){
+    /* Méthode de conversion d'un sommet en un autre */
+    public void convertRond(Sommet s){
+        if(this.isSommetInList(s) && !(s instanceof Rond)){
             Rond r=new Rond(s.getNom(),s.getX(),s.getY(),s.getLenght(),s.getCouleur());
             ArrayList<Arc> linked=new ArrayList<Arc>();
             for(Arc a : this.listArc){
                 if(a.contain(s)){
+                    if(a.getS1().equals(s)){
+                        a.setS1(r);
+                    }
+                    else{
+                        a.setS2(r);
+                    }
                     linked.add(a);
-                    this.delArc(a);
                 }
             }
             this.delSommet(s);
@@ -102,14 +115,19 @@ public class Graphe implements Serializable {
             }
         }
     }
-        public void convertCarre(Sommet s){
-        if(!(s instanceof Carre)){
+    public void convertCarre(Sommet s){
+        if(this.isSommetInList(s) && !(s instanceof Carre)){
             Carre c=new Carre(s.getNom(),s.getX(),s.getY(),s.getLenght(),s.getCouleur());
             ArrayList<Arc> linked=new ArrayList<Arc>();
             for(Arc a : this.listArc){
                 if(a.contain(s)){
+                    if(a.getS1().equals(s)){
+                        a.setS1(c);
+                    }
+                    else{
+                        a.setS2(c);
+                    }
                     linked.add(a);
-                    this.delArc(a);
                 }
             }
             this.delSommet(s);
@@ -119,14 +137,19 @@ public class Graphe implements Serializable {
             }
         }
     }
-        public void convertTriangle(Sommet s){
-        if(!(s instanceof Triangle)){
+    public void convertTriangle(Sommet s){
+        if(this.isSommetInList(s) && !(s instanceof Triangle)){
             Triangle t=new Triangle(s.getNom(),s.getX(),s.getY(),s.getLenght(),s.getCouleur());
             ArrayList<Arc> linked=new ArrayList<Arc>();
             for(Arc a : this.listArc){
                 if(a.contain(s)){
+                    if(a.getS1().equals(s)){
+                        a.setS1(t);
+                    }
+                    else{
+                        a.setS2(t);
+                    }
                     linked.add(a);
-                    this.delArc(a);
                 }
             }
             this.delSommet(s);
