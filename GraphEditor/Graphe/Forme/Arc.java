@@ -1,12 +1,12 @@
 package Graphe.Forme;
 
-
 import java.awt.*;
-import java.io.Serializable;
+import javax.swing.*;
 
-public class Arc extends Element implements Serializable {
+public abstract class Arc extends Element {
     private Sommet s1,s2;
     private float thickness;
+    private boolean oriente;
     public Arc(Sommet a, Sommet b){
         super("",Color.BLACK,Color.GREEN);
         this.s1=a;
@@ -48,11 +48,5 @@ public class Arc extends Element implements Serializable {
     }
     public boolean equals(Arc a){
         return (this.s1.equals(a.getS1())&&(this.s2.equals(a.getS2())))||(this.s1.equals(a.getS2())&&(this.s2.equals(a.getS1())));
-    }
-    public void paint(Graphics g){
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(this.getCouleurAff());
-        g2.setStroke(new BasicStroke(this.thickness));
-        g2.drawLine(this.s1.getXCenter(),this.s1.getYCenter(),this.s2.getXCenter(),this.s2.getYCenter());
     }
 }

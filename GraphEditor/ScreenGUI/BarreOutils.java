@@ -43,11 +43,27 @@ public class BarreOutils extends JToolBar implements ActionListener{
 		this.add(typeCarre);
 		this.add(typeTriangle);
 
+
+        this.addSeparator();
+
+
+        ButtonGroup typeArc = new ButtonGroup();
+        JRadioButton typeArete = new JRadioButton("Arete");
+		JRadioButton typeOriente = new JRadioButton("Arc");
+        typeArete.addActionListener(this);
+		typeArete.setActionCommand("Arete");
+		typeOriente.addActionListener(this);
+		typeOriente.setActionCommand("Arc");
+        typeArc.add(typeArete);
+        typeArc.add(typeOriente);
+        this.add(typeArete);
+        this.add(typeOriente);
+
         this.addSeparator();
 
         JButton suprArc=new JButton("Supprimer Arc");
         suprArc.addActionListener(this);
-		suprArc.setActionCommand("SuprArc");
+        suprArc.setActionCommand("SuprArc");
         this.add(suprArc);
 
         this.addSeparator();
@@ -84,6 +100,12 @@ public class BarreOutils extends JToolBar implements ActionListener{
         String action = ae.getActionCommand();
         if (action.equals("Rond")||action.equals("Carre")||action.equals("Triangle")||action.equals("Aucun")) {
             this.d.setType(action);
+        }
+        else if (action.equals("Arete")){
+            this.d.setOrientedArc(false);
+        }
+        else if (action.equals("Arc")){
+            this.d.setOrientedArc(true);
         }
         else if (action.equals("SuprArc")){
             this.d.delSelArc();
