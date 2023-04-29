@@ -5,9 +5,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public abstract class Element implements Serializable{
-    private String nom;
-    private static int nomDisplaySize=15;
-    private Color couleurAff,couleur,couleurSelect;
+    /* Attribut */
+    private String nom; // Nom de l'objet
+    private static int nomDisplaySize=15; // Taille du nom de l'objet affiché sur un pannel
+    private Color couleurAff,couleur,couleurSelect; // Couleurs d'affichage et de selection de l'objet
+    /* Constructeurs */
     Element(String nom){
         this.nom=nom;
         this.couleur=Color.BLACK;
@@ -26,6 +28,7 @@ public abstract class Element implements Serializable{
         this.couleurAff=c;
         this.couleurSelect=c2;
     }
+    /* Méthodes */
     public void setNom(String n){
         this.nom=n;
     }
@@ -56,6 +59,6 @@ public abstract class Element implements Serializable{
     static public int getNomDisplaySize(){
         return nomDisplaySize;
     }
-    public abstract void paint(Graphics g);
+    public abstract void paint(Graphics g); // Méthode dépendante de l'objet
 
 }

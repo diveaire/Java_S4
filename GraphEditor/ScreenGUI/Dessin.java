@@ -59,13 +59,30 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         return this.pselSom;
     }
     public void setSelSom(Sommet s){
+        if(this.selSom!=null){
+            this.selSom.setCouleurAff(this.selSom.getCouleur());
+        }
+        if(s!=null){
+            s.setCouleurAff(s.getCouleurSelect());
+        }
         this.selSom=s;
     }
     public Sommet getPrevSelSom(){
         return this.pselSom;
     }
     public void setPrevSelSom(Sommet s){
-        this.pselSom=s;
+        if(this.selSom!=null){
+            if(this.pselSom!=null){
+                this.pselSom.setCouleurAff(this.pselSom.getCouleur());
+            }
+            if(s!=null){
+                s.setCouleurAff(s.getCouleurSelect());
+            }
+            this.pselSom=s;
+        }
+        else{
+            this.setSelSom(s);
+        }
     }
     public Sommet getMovedSom(){
         return this.movedSom;
@@ -74,7 +91,9 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         return this.selArc;
     }
     public void setSelArc(){
-        this.selArc=this.graphe.getArc(new Arete(this.selSom,this.pselSom));
+        if(this.selSom!=null && this.pselSom!=null){
+            this.selArc=this.graphe.getArc(new Arete(this.selSom,this.pselSom));
+        }
     }
     public void delSelArc(){
         if(this.selArc!=null){
@@ -257,6 +276,9 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
             if(this.graphe.isSommetInList(new Rond("",e.getX(),e.getY(),this.size))){
                 if(this.movedSom==null){
                     this.movedSom=this.graphe.getSommet(new Rond("",e.getX(),e.getY(),this.size));
+                }
+                else if(this.movedSom!=null){
+                    this.movedSom=null;
                 }
             }
         }
