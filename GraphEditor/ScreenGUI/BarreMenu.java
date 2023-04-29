@@ -145,7 +145,7 @@ public class BarreMenu extends JMenuBar implements ActionListener{
             File fichier = chooser.getSelectedFile();
             if(fichier.exists()) {
                 try {
-                    screen.d.setGraphe(screen.d.getGraphe().deserialize(fichier.getName()));
+                    screen.d.setGraphe(screen.d.getGraphe().deserialize(fichier.getAbsolutePath()));
                     screen.d.repaint();
                 } catch(Exception ex) {
                     ex.printStackTrace();
