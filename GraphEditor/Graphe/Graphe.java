@@ -63,9 +63,9 @@ public class Graphe implements Serializable {
         }
         this.listSom.remove(x);
     }
-    public void addArc(Sommet a,Sommet b){
-        if(!isArcInList(new Arc(a,b))&&(this.isSommetInList(a))&&(this.isSommetInList(b))){
-            this.listArc.add(new Arc(a,b));
+    public void addArc(Arc a){
+        if(!isArcInList(a)&&(this.isSommetInList(a.getS1()))&&(this.isSommetInList(a.getS2()))){
+            this.listArc.add(a);
         }
     }
     public Arc getArc(Arc a){
