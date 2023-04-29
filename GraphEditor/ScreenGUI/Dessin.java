@@ -7,14 +7,17 @@ import javax.swing.*;
 // PACKAGES LOCAL
 import Graphe.*;
 import Graphe.Forme.*;
+
 public class Dessin extends JPanel implements MouseListener,MouseMotionListener {
+    /* Attributs */
     private Graphe graphe;
-    private int size,movedX,movedY;
-    private boolean orientedArc;
-    private String type;
-    private Sommet selSom,pselSom,movedSom;
-    private Arc selArc;
-    private Windows fenetre;
+    private int size,movedX,movedY; // Taille des objets créés, dernière position en X et Y de la souris
+    private boolean orientedArc; // Booleen indiquant la création d'un arc ou d'une arête
+    private String type; // Chaine indiquant la création d'un Rond, Carre ou Triangle
+    private Sommet selSom,pselSom,movedSom; // Sommet selectionné, précédent sommet selectionné, sommet à bouger
+    private Arc selArc; // Arc selectionné
+    private Windows fenetre; // Fenetre à laquelle le dessin est lié
+    /* Constructeurs */
     public Dessin(Windows W){
         this.graphe=new Graphe();
         this.size=20;
@@ -28,6 +31,7 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         addMouseListener(this);
         addMouseMotionListener(this);
     }
+    /* Méthodes */
     public void setWindow(Windows win) {
         this.fenetre=win;
     }
@@ -59,11 +63,13 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         return this.pselSom;
     }
     public void setSelSom(Sommet s){
+        /* Si le sommet selectionné est changé il faut modifier les couleurs de selection */
         if(this.selSom!=null){
             this.selSom.setCouleurAff(this.selSom.getCouleur());
         }
         if(s!=null){
             s.setCouleurAff(s.getCouleurSelect());
+            this.setPrevSelSom(this.selSom);
         }
         this.selSom=s;
     }
@@ -71,7 +77,9 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         return this.pselSom;
     }
     public void setPrevSelSom(Sommet s){
+        /* Si le sommet selectionné n'a pas de valeur alors on n'affecte rien à la valeur de "sélection précédente" */
         if(this.selSom!=null){
+            /* Si le sommet selectionné est changé il faut modifier les couleurs de selection */
             if(this.pselSom!=null){
                 this.pselSom.setCouleurAff(this.pselSom.getCouleur());
             }
@@ -110,12 +118,15 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
     public void setOrientedArc(boolean r){
         this.orientedArc=r;
     }
+    /* Méthode permettant de récupérer un nom valable */
     public String askName(){
         String x= JOptionPane.showInputDialog(this, "Nommez le nouvel élément :");
         if(x==null){
+            /* Si aucune chaine n'a été sélectionnée, on affecte le nom ERROR qui indique la non création d'un objet */
             x="ERROR";
         }
         else{
+            /* Le seul nom pouvant être affecté plusieurs fois est un sommet sans nom */
             while(!x.equals("") && !this.graphe.isAvailableName(x)){
                 x=JOptionPane.showInputDialog(this, "Nom déjà attribué ! Nommez le nouvel élément :");
                 if(x==null){
@@ -129,6 +140,7 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         super.paintComponent(g); 
         this.graphe.paint(g);
         if(this.movedSom!=null){
+            /* Si on déplace un sommet, il faut mettre à jour l'affichage en fonction de movedX et movedY */
             g.setColor(Color.LIGHT_GRAY);
             Graphics2D g2 = (Graphics2D) g;
             this.movedSom.setX(this.movedX-this.movedSom.getLenght()/2);
@@ -138,14 +150,18 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
     }
     public void mouseClicked(MouseEvent e){
         this.movedSom=null;
+        /* Si on effectue un clique droit */
         if(e.getButton()==MouseEvent.BUTTON1){
+            /* Si on a cliqué sur un sommet*/
             if(this.graphe.isSommetInList(new Rond("",e.getX(),e.getY(),this.size))){
                 Sommet pointed=this.graphe.getSommet(new Rond("",e.getX(),e.getY(),this.size));
+                /* Si aucun sommet n'est sélectionné */
                 if(this.selSom==null){
                     this.selSom=pointed;
                     pointed.setCouleurAff(pointed.getCouleurSelect());
                     this.repaint();
                 }
+                /* Si on clique sur un sommet déjà sélectionné */
                 else if(this.selSom.equals(pointed)){
                     if(this.pselSom!=null){
                         this.selSom=this.pselSom;
@@ -161,6 +177,7 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
                     }
                     this.repaint();
                 }
+                /* Si on clique sur un autre sommet et que l'on a déjà sélectionné un sommet */
                 else if(this.pselSom==null){
                     this.pselSom=pointed;
                     if(this.orientedArc){
@@ -172,6 +189,7 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
                     pointed.setCouleurAff(pointed.getCouleurSelect());
                     this.repaint();
                 }
+                /* Si on clique sur le deuxième sommet déjà sélectionné */
                 else if(this.pselSom.equals(pointed)){
                     this.pselSom=null;
                     pointed.setCouleurAff(pointed.getCouleur());
@@ -181,6 +199,7 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
                     }
                     this.repaint();
                 }
+                /* Sinon on clique sur un autre sommet alors que deux sommets sont déjà sélectionné, on interverti les différents sommets */
                 else{
                     this.selSom.setCouleurAff(pointed.getCouleur());
                     this.selSom=this.pselSom;
@@ -199,13 +218,14 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
                     }
                     this.repaint();
                 }
-                //arc ou sommet
+                /* On vérifie si deux sommets on été sélectionné ce qui indique que s'il existe un arc entre les deux, on le sélectionne */
                 if (this.selSom!=null && this.pselSom!=null && this.graphe.isArcInList(new Arete(this.selSom,this.pselSom))){
                     this.setSelArc();
                     this.selArc.setCouleur(this.selArc.getCouleurSelect());
                     this.repaint();
                 }
             }
+            /* Si on clique sur un espace non occupé */
             else{
                 if(this.type!="Aucun"){
                     String n=this.askName();
@@ -225,6 +245,7 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
                     }
                     
                 }
+                /* Chacun des éléments est déselectionné si aucun type n'est sélectionné */
                 else{
                     if(this.selSom!=null){
                         this.selSom.setCouleurAff(this.selSom.getCouleur());
@@ -242,6 +263,7 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
                 }
             }
         }
+        /* Si on effectue un clique gauche sur un sommet, on supprime le sommet */
         else if((e.getButton()==MouseEvent.BUTTON3)&&(graphe.isSommetInList(new Rond("",e.getX(),e.getY(),this.size)))){
             Sommet pointed=this.graphe.getSommet(new Rond("",e.getX(),e.getY(),this.size));
             if(this.selSom!=null && this.selSom.equals(pointed)){
@@ -271,6 +293,7 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
     }
     public void mousePressed(MouseEvent e){
         if(e.getButton()==MouseEvent.BUTTON1){
+            /* Si on clique sur un sommet en maintenant le bouton enfoncé, on le déplace */
             if(this.graphe.isSommetInList(new Rond("",e.getX(),e.getY(),this.size))){
                 if(this.movedSom==null){
                     this.movedSom=this.graphe.getSommet(new Rond("",e.getX(),e.getY(),this.size));
