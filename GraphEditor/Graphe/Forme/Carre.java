@@ -1,10 +1,11 @@
 package Graphe.Forme;
 
-
 import java.awt.*;
 
 public class Carre extends Sommet{
+    /* Attribut */
     private int l;
+    /* Constructeurs */
     public Carre(String n,int a,int b,int c){
         super(n,a,b);
         this.l=c;
@@ -13,6 +14,7 @@ public class Carre extends Sommet{
         super(n,a,b,d);
         this.l=c;
     }
+    /* Methodes */
     public void setLenght(int a){
         this.l=a;
     }
@@ -26,6 +28,7 @@ public class Carre extends Sommet{
         return this.getY()+(this.l/2);
     }
     public void paint(Graphics g){
+        /* Dessin d'un carré et ajout des noms au dessus de celui-ci */
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(this.getCouleurAff());
         g2.fill3DRect(this.getX(),this.getY(),this.l,this.l,false);

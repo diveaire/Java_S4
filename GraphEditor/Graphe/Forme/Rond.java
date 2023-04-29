@@ -1,10 +1,11 @@
 package Graphe.Forme;
 
-
 import java.awt.*;
 
 public class Rond extends Sommet{
+    /* Attribut */
     private int r;
+    /* Constructeurs */
     public Rond(String n, int a, int b, int c){
         super(n,a,b);
         this.r=c;
@@ -13,6 +14,7 @@ public class Rond extends Sommet{
         super(n,a,b,d);
         this.r=c;
     }
+    /* Méthodes */
     public void setLenght(int a){
         this.r=a;
     }
@@ -26,6 +28,7 @@ public class Rond extends Sommet{
         return this.getY()+(this.r/2);
     }
     public void paint(Graphics g){
+        /* Dessine un rond et affiche le nom de l'objet au dessus de celui-ci */
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(this.getCouleurAff());
         g2.fillOval(this.getX(),this.getY(),this.r,this.r);

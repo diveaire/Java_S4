@@ -4,9 +4,10 @@ import java.awt.*;
 import javax.swing.*;
 
 public abstract class Arc extends Element {
-    private Sommet s1,s2;
+    /* Attributs */
+    private Sommet s1,s2; // Les deux sommets de l'arc définissant sa position
     private float thickness;
-    private boolean oriente;
+    /* Constructeurs */
     public Arc(Sommet a, Sommet b){
         super("",Color.BLACK);
         this.s1=a;
@@ -19,6 +20,7 @@ public abstract class Arc extends Element {
         this.s2=b;
         this.thickness=1;
     }
+    /* Méthodes */
     public void setS1(Sommet a){
         this.s1=a;
     }
@@ -41,6 +43,7 @@ public abstract class Arc extends Element {
         return (a.equals(this.s1))||(a.equals(this.s2));
     }
     public boolean equals(Arc a){
+        /* Si les deux sommets d'un arc sont un à un égaux alors il s'agit du même arc */
         return (this.s1.equals(a.getS1())&&(this.s2.equals(a.getS2())))||(this.s1.equals(a.getS2())&&(this.s2.equals(a.getS1())));
     }
 }
