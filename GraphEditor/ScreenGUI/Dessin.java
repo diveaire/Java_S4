@@ -59,13 +59,30 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         return this.pselSom;
     }
     public void setSelSom(Sommet s){
+        if(this.selSom!=null){
+            this.selSom.setCouleurAff(this.selSom.getCouleur());
+        }
+        if(s!=null){
+            s.setCouleurAff(s.getCouleurSelect());
+        }
         this.selSom=s;
     }
     public Sommet getPrevSelSom(){
         return this.pselSom;
     }
     public void setPrevSelSom(Sommet s){
-        this.pselSom=s;
+        if(this.selSom!=null){
+            if(this.pselSom!=null){
+                this.pselSom.setCouleurAff(this.pselSom.getCouleur());
+            }
+            if(s!=null){
+                s.setCouleurAff(s.getCouleurSelect());
+            }
+            this.pselSom=s;
+        }
+        else{
+            this.setSelSom(s);
+        }
     }
     public Sommet getMovedSom(){
         return this.movedSom;
