@@ -256,6 +256,9 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
                 if(this.movedSom==null){
                     this.movedSom=this.graphe.getSommet(new Rond("",e.getX(),e.getY(),this.size));
                 }
+                else if(this.movedSom!=null){
+                    this.movedSom=null;
+                }
             }
         }
     }  
