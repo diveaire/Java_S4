@@ -91,7 +91,9 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         return this.selArc;
     }
     public void setSelArc(){
-        this.selArc=this.graphe.getArc(new Arete(this.selSom,this.pselSom));
+        if(this.selSom!=null && this.pselSom!=null){
+            this.selArc=this.graphe.getArc(new Arete(this.selSom,this.pselSom));
+        }
     }
     public void delSelArc(){
         if(this.selArc!=null){
