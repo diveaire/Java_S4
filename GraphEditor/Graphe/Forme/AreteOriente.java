@@ -7,11 +7,11 @@ public class AreteOriente extends Arc {
     private int longueur;
     public AreteOriente(Sommet a, Sommet b){
         super(a,b);
-        this.longueur=20;
+        this.longueur=10;
     }
     public AreteOriente(Sommet a,Sommet b,String n,Color c){
         super(a,b,n,c);
-        this.longueur=20;
+        this.longueur=10;
     }
     public AreteOriente(Sommet a,Sommet b,String n,Color c,int l){
         super(a,b,n,c);
