@@ -96,6 +96,7 @@ public class Graphe implements Serializable {
     public void convertRond(Sommet s){
         if(this.isSommetInList(s) && !(s instanceof Rond)){
             Rond r=new Rond(s.getNom(),s.getX(),s.getY(),s.getLenght(),s.getCouleur());
+            /* Création d'une liste de tous les arcs liés au sommet modifiables que l'on va associé au nouveau sommet */
             ArrayList<Arc> linked=new ArrayList<Arc>();
             for(Arc a : this.listArc){
                 if(a.contain(s)){
@@ -109,6 +110,7 @@ public class Graphe implements Serializable {
                 }
             }
             this.delSommet(s);
+            /* Ajout du nouveau sommet et de chaque arc lié à celui-ci */
             this.addSommet(r);
             for(Arc a1 : linked){
                 this.listArc.add(a1);
@@ -118,6 +120,7 @@ public class Graphe implements Serializable {
     public void convertCarre(Sommet s){
         if(this.isSommetInList(s) && !(s instanceof Carre)){
             Carre c=new Carre(s.getNom(),s.getX(),s.getY(),s.getLenght(),s.getCouleur());
+            /* Création d'une liste de tous les arcs liés au sommet modifiables que l'on va associé au nouveau sommet */
             ArrayList<Arc> linked=new ArrayList<Arc>();
             for(Arc a : this.listArc){
                 if(a.contain(s)){
@@ -131,6 +134,7 @@ public class Graphe implements Serializable {
                 }
             }
             this.delSommet(s);
+            /* Ajout du nouveau sommet et de chaque arc lié à celui-ci */
             this.addSommet(c);
             for(Arc a1 : linked){
                 this.listArc.add(a1);
@@ -140,6 +144,7 @@ public class Graphe implements Serializable {
     public void convertTriangle(Sommet s){
         if(this.isSommetInList(s) && !(s instanceof Triangle)){
             Triangle t=new Triangle(s.getNom(),s.getX(),s.getY(),s.getLenght(),s.getCouleur());
+            /* Création d'une liste de tous les arcs liés au sommet modifiables que l'on va associé au nouveau sommet */
             ArrayList<Arc> linked=new ArrayList<Arc>();
             for(Arc a : this.listArc){
                 if(a.contain(s)){
@@ -153,6 +158,7 @@ public class Graphe implements Serializable {
                 }
             }
             this.delSommet(s);
+            /* Ajout du nouveau sommet et de chaque arc lié à celui-ci */
             this.addSommet(t);
             for(Arc a1 : linked){
                 this.listArc.add(a1);
@@ -167,6 +173,7 @@ public class Graphe implements Serializable {
             a.paint(g);
         }
     }
+    /* Méthodes de sérialization et de désérialization d'un graphe */
     public void serialize(Graphe g,String filename) {
         try {
             FileOutputStream fileOut = new FileOutputStream(filename);
