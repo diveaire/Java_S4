@@ -1,18 +1,42 @@
 package ScreenGUI;
 
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.event.*;
 
+/**
+ * Une barre d'outil permettant de faire le choix de l'outil à dessiner dans le Dessin
+ */
 public class BarreOutils extends JToolBar implements ActionListener{
-    /* Attribut */
-    private Dessin d; // Le dessin sur lequel effectué les modifications
+    /**
+     * Le Dessin
+     */
+    protected Dessin d;
+    /**
+     * Les boutons sélections
+     */
     private JRadioButton typeAucun,typeRond,typeCarre,typeTriangle,typeArete,typeOriente;
+    /**
+     * Bouton Group
+     */
     private ButtonGroup typeSommet,typeArc;
+    /**
+     * Bouton de conversion objet
+     */
     private JButton convRond, convCarre, convTriangle,suprArc;
+    /**
+     * JPanel
+     */
     private JPanel selType,selArc,convLab,supLab;
-    /* Constructeur */
+
+    /**
+     * Création de la Barre outils.
+     *
+     * @param nom  le nom de la barre d'outil
+     * @param draw le dessin
+     */
     public BarreOutils(String nom,Dessin draw){
         super(nom);
         this.d=draw;
@@ -114,12 +138,29 @@ public class BarreOutils extends JToolBar implements ActionListener{
         this.add(this.supLab);
     }
     /* Méthode */
+
+    /**
+     * récupère le dessin.
+     *
+     * @return dessin
+     */
     public Dessin getDessin(){
         return this.d;
     }
+
+    /**
+     * définir le dessin.
+     *
+     * @param draw le dessin
+     */
     public void setDessin(Dessin draw){
         this.d=draw;
     }
+
+    /**
+     * Fonction permettant de valider l'action de la barre d'outils
+     * @param ae ActionEvent ae
+     */
     public void actionPerformed(ActionEvent ae) {
         String action = ae.getActionCommand();
         if (action.equals("Rond")||action.equals("Carre")||action.equals("Triangle")||action.equals("Aucun")) {

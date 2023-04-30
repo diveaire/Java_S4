@@ -2,11 +2,31 @@ package Graphe.Forme;
 
 import java.awt.*;
 
+/**
+ * Objet (hérité de Sommet) correspondant à un sommet d'un graphe représenté par un Triangle
+ */
 public class Triangle extends Sommet{
-    /* Attributs */
+    /**
+     * taille de l'objet
+     */
     private int l;
-    private int [] posx=new int[3]; //Coordonnées en x de chaque points du triangle
-    private int [] posy=new int[3]; //Coordonnées en y de chaque points du triangle
+    /**
+     * Coordonnées en x de chaque points du triangle
+     */
+    private int [] posx=new int[3];
+    /**
+     * Coordonnées en y de chaque points du triangle
+     */
+    private int [] posy=new int[3];
+
+    /**
+     * Création d'un Triangle.
+     *
+     * @param n le nom
+     * @param a Coordonné X
+     * @param b Coordonné Y
+     * @param c Taille
+     */
     /* Constructeurs */
     public Triangle(String n,int a,int b,int c){
         super(n,a,b);
@@ -19,6 +39,16 @@ public class Triangle extends Sommet{
         this.posx[2]=(a+c);
         this.posy[2]=(b+c);
     }
+
+    /**
+     * Création d'un Triangle.
+     *
+     * @param n le nom
+     * @param a Coordonné X
+     * @param b Coordonné Y
+     * @param c Taille
+     * @param d Couleur
+     */
     public Triangle(String n,int a,int b,int c,Color d){
         super(n,a,b,d);
         this.l=c;
@@ -30,6 +60,17 @@ public class Triangle extends Sommet{
         this.posx[2]=(a+c);
         this.posy[2]=(b+c);
     }
+
+    /**
+     * Création d'un Triangle.
+     *
+     * @param n le nom
+     * @param a Coordonné X
+     * @param b Coordonné Y
+     * @param c Taille
+     * @param d Couleur
+     * @param d2 Couleur Sélection
+     */
     public Triangle(String n,int a,int b,int c,Color d, Color d2){
         super(n,a,b,d,d2);
         this.l=c;
@@ -40,6 +81,11 @@ public class Triangle extends Sommet{
         this.posx[2]=(a+c);
         this.posy[2]=(b+c);
     }
+
+    /**
+     * Définir la taille de l'élément
+     * @param a Taille (Entier)
+     */
     public void setLenght(int a){
         this.l=a;
         /* Quand on modifie la longueur du triangle, les positions des trois points sont modifiées */
@@ -50,15 +96,34 @@ public class Triangle extends Sommet{
         this.posx[2]=(this.getX()+this.l);
         this.posy[2]=(this.getY()+this.l);
     }
+
+    /**
+     * Récupérer la taille de l'élément
+     * @return Taille (Entier)
+     */
     public int getLenght(){
         return this.l;
     }
+
+    /**
+     * Récupérer coordonnée du centre X de l'objet
+     * @return Coordonnée X au Centre
+     */
     public int getXCenter(){
         return this.getX()+(this.l/2);
     }
+    /**
+     * Récupérer coordonnée du centre Y de l'objet
+     * @return Coordonnée Y au Centre
+     */
     public int getYCenter(){
         return this.getY()+(this.l/2);
     }
+
+    /**
+     * Dessine l'élément Triangle
+     * @param g Graphics
+     */
     public void paint(Graphics g){
         /* On dessine un polygone représentant un triangle selon les trois points définis précèdement et on affiche le nom du triangle au dessus */
         this.setLenght(this.l);

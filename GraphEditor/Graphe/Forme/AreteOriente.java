@@ -3,30 +3,77 @@ package Graphe.Forme;
 import java.awt.*;
 import javax.swing.*;
 
+/**
+ * Objet (hérité d'Arc) permettant de représenter une arrete orienté dans le graphe
+ */
 public class AreteOriente extends Arc {
-    /* Attributs */
-    private int longueur; // taille de la flèche
+    /**
+     * Taille de la fleche
+     */
+    private int longueur;
+
+    /**
+     * Création d'une Arete.
+     *
+     * @param a Sommet 1
+     * @param b Sommet 2
+     */
     /* Constructeurs */
     public AreteOriente(Sommet a, Sommet b){
         super(a,b);
         this.longueur=10;
     }
+
+    /**
+     * Création d'une Arete.
+     *
+     * @param a Sommet 1
+     * @param b Sommet 2
+     * @param n Nom de l'ArreteOriente
+     * @param c Couleur de l'ArreteOriente
+     */
     public AreteOriente(Sommet a,Sommet b,String n,Color c){
         super(a,b,n,c);
         this.longueur=10;
     }
+
+    /**
+     * Création d'une Arete.
+     *
+     * @param a Sommet 1
+     * @param b Sommet 2
+     * @param n Nom de l'ArreteOriente
+     * @param c Couleur de l'ArreteOriente
+     * @param l longeur de l'ArreteOriente
+     */
     public AreteOriente(Sommet a,Sommet b,String n,Color c,int l){
         super(a,b,n,c);
         this.longueur=l;
     }
+
+    /**
+     * Récupère la longueur de l'objet
+     *
+     * @return Longueur de l'objet
+     */
     /* Méthode */
     public int getlongueur(){
         return this.longueur;
     }
+
+    /**
+     * définir la longueur de l'objet
+     *
+     * @param x entier pour définir la longueur de l'objet
+     */
     public void setlongueur(int x){
         this.longueur=x;
     }
-    /* Méthode paint */
+
+    /**
+     * Méthode pour dessiner une Arrête Orientée
+     * @param g Objet (Graphics)
+     */
     public void paint(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(this.getCouleurAff());

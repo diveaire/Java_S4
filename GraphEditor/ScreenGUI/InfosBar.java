@@ -1,5 +1,9 @@
 package ScreenGUI;
 
+import Graphe.Forme.Arc;
+import Graphe.Forme.Element;
+import Graphe.Forme.Sommet;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -7,27 +11,50 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * The type Infos bar.
+ * InfosBar est un panel permettant l'affichage et la modifications des éléments Graphe du Dessin
  */
 public class InfosBar extends JPanel{
     /**
-     * The Aff.
+     * Booléen permettant de savoir si la fenêtre doit être affichée ou masquée.
      */
     boolean aff;
     /**
-     * The D.
+     * Le Dessin des éléments à affichés dans l'info bar
      */
     Dessin D;
-    private JPanel haut, bas;
-    private JTextField nomField,lenField,thickField,nomArcField;
-    private JButton appliquerButton;
-    private BoutonCouleur colorButton,colorButtonSelect;
-
     /**
-     * Instantiates a new Infos bar.
+     * Les deux sections de l'infosBar : haut=modification éléments bas=liste éléments
+     */
+    private JPanel haut, bas;
+    /**
+     * Champs de texte pour la BarreInfos
+     */
+    private JTextField nomField,lenField,thickField,nomArcField;
+    /**
+     * Bouton de validation des modifications
+     */
+    private JButton appliquerButton;
+    /**
+     * Les boutons pour choisir une couleur
+     */
+    private BoutonCouleur colorButton,colorButtonSelect;
+    /**
+     * Model pour la liste
+     */
+    private DefaultListModel<Element> model;
+    /**
+     * Liste des éléments du dessin
+     */
+    private JList<Element> list;
+    /**
+     * Box pour l'affichage
+     */
+    private Box b1;
+    /**
+     * Création de l'InfosBar
      *
-     * @param aff the aff
-     * @param d   the d
+     * @param aff Paramètre Booléen qui définis si la fenêtre est affichée ou non par default
+     * @param d   Dessin référent de l'InfosBar
      */
     public InfosBar(boolean aff, Dessin d){
         //parametre de la fenêtre
@@ -43,7 +70,7 @@ public class InfosBar extends JPanel{
 
         this.bas = new JPanel();
         this.bas.setBackground(Color.GRAY);
-
+        this.b1=new Box(BoxLayout.Y_AXIS);
 
         /* initialisation des options */
         nomField = new JTextField();
@@ -56,14 +83,26 @@ public class InfosBar extends JPanel{
 
         appliquerButton = new JButton("Appliquer");
         appliquerButton.addActionListener(this::appliqueModif);
+
+        // Créer un modèle pour la liste
+        model = new DefaultListModel<>();
+        // Créer la JList à partir du modèle
+        list = new JList<>(model);
+        list.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                label.setHorizontalAlignment(JLabel.CENTER);
+                return label;
+            }
+        });
+
         /* reglage de l'affichage */
         this.update();
     }
-
     /**
-     * Update.
+     * Met à jour la barre info en fonction du mouse event
      */
-//met à jour la barre info en fonction du mouse event
     public void update(){
         //on enleve tous les éléments de haut
         this.haut.removeAll();
@@ -87,8 +126,6 @@ public class InfosBar extends JPanel{
             this.haut.add(appliquerButton);
 
         }else if (D.getSelSom() != null) {//changement sommet
-            //colorButton.setBackgroundColor(this.D.getSelSom().getCouleur());
-            //colorButtonSelect.setBackgroundColor(this.D.getSelSom().getCouleurSelect());
             this.haut.add(new JLabel("Sommet" ));
             this.haut.setLayout(new GridLayout(10,2));
 
@@ -109,9 +146,56 @@ public class InfosBar extends JPanel{
             this.haut.add(new JTextField("aucun sommets/arrêtes sélectionnées "));
         }
         this.add(haut);
+
+
+
+        this.b1.removeAll();
+        this.model.removeAllElements();
+
+        this.b1.add(new JLabel("Liste des composants"));
+        for (Sommet s : this.D.getGraphe().getSommetList()){
+            model.addElement(s);
+        }
+        for(Arc a : this.D.getGraphe().getArcList()){
+            model.addElement(a);
+        }
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                Object selectedObject = list.getSelectedValue();
+                if (selectedObject instanceof Sommet) {
+                    this.D.resetSelSom();
+                    this.D.setSelSom((Sommet) selectedObject);
+                    this.D.getSelSom().setCouleurAff(this.D.getSelSom().getCouleurSelect());
+                    this.D.getWindow().updateBar();
+                    this.D.revalidate();
+                    this.D.repaint();
+                } else if (selectedObject instanceof Arc) {
+                    this.D.resetSelSom();
+                    this.D.setSelSom(((Arc)selectedObject).getS1());
+                    this.D.setSelSom(((Arc) selectedObject).getS2());
+                    this.D.setSelArc();
+
+                    this.D.getSelSom().setCouleurAff(this.D.getSelSom().getCouleurSelect());
+                    this.D.getPSelSom().setCouleurAff(this.D.getPSelSom().getCouleurSelect());
+                    this.D.getSelArc().setCouleurAff(this.D.getSelArc().getCouleurSelect());
+
+                    this.D.getWindow().updateBar();
+                    this.D.revalidate();
+                    this.D.repaint();
+                }
+
+            }
+        });
+        JScrollPane scrollPane = new JScrollPane(list);
+        b1.add(scrollPane);
+        this.bas.add(b1);
+        this.add(bas);
     }
 
-    //met à jour les modifications
+    /**
+     * Met à jour les modifications
+     */
     private void appliqueModif(ActionEvent event) {
 
         /* CHANGEMENTS SUR ARC */
@@ -172,9 +256,8 @@ public class InfosBar extends JPanel{
     }
 
     /**
-     * Show edit bar.
+     * Affiche ou masque la Barre d'infos
      */
-//affiche ou masque la barre info
     public void showEditBar(){
         this.aff= !this.aff;
         this.setVisible(this.aff);

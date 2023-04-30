@@ -8,16 +8,51 @@ import javax.swing.*;
 import Graphe.*;
 import Graphe.Forme.*;
 
+/**
+ * Dessin est une classe permettant de générer un panel pour dessiner les graphes à l'aide de la sourie
+ */
 public class Dessin extends JPanel implements MouseListener,MouseMotionListener {
-    /* Attributs */
+    /**
+     * Graphe du dessin
+     */
     private Graphe graphe;
-    private int size,movedX,movedY; // Taille des objets créés, dernière position en X et Y de la souris
-    private boolean orientedArc; // Booleen indiquant la création d'un arc ou d'une arête
-    private String type; // Chaine indiquant la création d'un Rond, Carre ou Triangle
-    private Sommet selSom,pselSom,movedSom; // Sommet selectionné, précédent sommet selectionné, sommet à bouger
-    private Arc selArc; // Arc selectionné
-    private Windows fenetre; // Fenetre à laquelle le dessin est lié
-    /* Constructeurs */
+    /**
+     * Taille des objets créés, dernière position en X et Y de la souris
+     */
+    private int size,movedX,movedY;
+    /**
+     * Booleen indiquant la création d'un arc ou d'une arête
+     */
+    private boolean orientedArc;
+    /**
+     * Chaine indiquant la création d'un Rond, Carre ou Triangle
+     */
+    private String type;
+    /**
+     * Sommet selectionné
+     */
+    private Sommet selSom;
+    /**
+     * Sommet précédent sommet selectionné
+     */
+    private Sommet pselSom;
+    /**
+     * Sommet  sommet à bouger
+     */
+    private Sommet movedSom;
+    /**
+     *  Arc selectionné
+     */
+    private Arc selArc;
+    /**
+     * Fenetre à laquelle le dessin est lié
+     */
+    private Windows fenetre;
+    /**
+     * Création du Dessin
+     *
+     * @param W La fenêtre ou le dessin va être contenu
+     */
     public Dessin(Windows W){
         this.graphe=new Graphe();
         this.size=20;
@@ -31,37 +66,102 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         addMouseListener(this);
         addMouseMotionListener(this);
     }
-    /* Méthodes */
+
+    /**
+     * Methode pour définir la fenêtre Windows
+     *
+     * @param win la fenêtre (Windows)
+     */
     public void setWindow(Windows win) {
         this.fenetre=win;
     }
+
+    /**
+     * Méthode pour récupérer la fenêtre (Windows)
+     *
+     * @return retourne la fenêtre (Windows)
+     */
     public Windows getWindow() {
         return this.fenetre ;
     }
+
+    /**
+     * Méthode pour récupérer le Graphe
+     *
+     * @return retourne le Graphe
+     */
     public Graphe getGraphe(){
         return this.graphe;
     }
+
+    /**
+     * Methode pour définir le Graphe
+     *
+     * @param g Le Graphe
+     */
     public void setGraphe(Graphe g){
         this.graphe=g;
     }
+
+    /**
+     * Méthode pour récupérer le type
+     *
+     * @return chaine correspondant au type
+     */
     public String getType(){
         return this.type;
     }
+
+    /**
+     * Methode pour définir la fenêtre Windows
+     *
+     * @param newType chaine correspondant au type
+     */
     public void setType(String newType){
         this.type=newType;
     }
+
+    /**
+     * Méthode pour récupérer la taille 
+     *
+     * @return Retourne la taille (entier)
+     */
     public int getSizeLenght(){
         return this.size;
     }
+
+    /**
+     * Methode pour définir la taille (entier)
+     *
+     * @param x taille (entier)
+     */
     public void setSizeLenght(int x){
         this.size=x;
     }
+
+    /**
+     * Méthode pour récupérer le Sommet sélectionné
+     *
+     * @return Retourne le Sommet sélectionné sur le dessin
+     */
     public Sommet getSelSom(){
         return this.selSom;
     }
+
+    /**
+     * Méthode pour récupérer le Sommet sélectionné précédement.
+     *
+     * @return Retourne le Sommet sélectionné précédement sur le dessin
+     */
     public Sommet getPSelSom(){
         return this.pselSom;
     }
+
+    /**
+     * Methode pour définir le Sommet selectionné de manière logique
+     *
+     * @param s Le Sommet à enregistrer comme sélectionné
+     */
     public void setSelSom(Sommet s){
         /* Si le sommet selectionné est changé il faut modifier les couleurs de selection */
         if(this.selSom!=null){
@@ -73,9 +173,11 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         }
         this.selSom=s;
     }
-    public Sommet getPrevSelSom(){
-        return this.pselSom;
-    }
+    /**
+     * Methode pour définir le Sommet selectionné précédement de manière logique
+     *
+     * @param s Le Sommet à enregistrer comme sélectionné précédement
+     */
     public void setPrevSelSom(Sommet s){
         /* Si le sommet selectionné n'a pas de valeur alors on n'affecte rien à la valeur de "sélection précédente" */
         if(this.selSom!=null){
@@ -92,17 +194,55 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
             this.setSelSom(s);
         }
     }
+
+    /**
+     * reset de la sélection des Sommets
+     *
+     */
+    public void resetSelSom(){
+        //si un arc est sélectionné
+        if (this.selSom != null && this.pselSom != null){
+            this.getSelArc().setCouleurAff(this.getSelArc().getCouleur());
+            this.pselSom.setCouleurAff(this.pselSom.getCouleur());
+            this.pselSom=null;
+        }
+        //si un sommet est sélectionné
+        if (this.selSom != null){
+            this.selSom.setCouleurAff(this.selSom.getCouleur());
+        }
+        this.selSom=null;
+    }
+
+    /**
+     * Méthode pour récupérer Sommet Déplacer.
+     *
+     * @return Le Sommet Déplacer.
+     */
     public Sommet getMovedSom(){
         return this.movedSom;
     }
+
+    /**
+     * Méthode pour récupérer l'Arc sélectionné.
+     *
+     * @return l'Arc sélectionné
+     */
     public Arc getSelArc(){
         return this.selArc;
     }
+
+    /**
+     * Méthode pour définir l'Arc sélectionné.
+     */
     public void setSelArc(){
         if(this.selSom!=null && this.pselSom!=null){
             this.selArc=this.graphe.getArc(new Arete(this.selSom,this.pselSom));
         }
     }
+
+    /**
+     * Méthode pour supprimer l'Arc sélectionné.
+     */
     public void delSelArc(){
         if(this.selArc!=null){
             if(this.graphe.isArcInList(this.selArc)){
@@ -112,13 +252,30 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
             }
         }
     }
+
+    /**
+     * Méthode pour récupérer l'arc orienté sélectionné.
+     *
+     * @return l'arc orienté sélectionné.
+     */
     public boolean getOrientedArc(){
         return this.orientedArc;
     }
+
+    /**
+     Méthode pour définir si l'arc est orienté.
+     *
+     * @param r booléen vaut vrai si l'arc est orienté
+     */
     public void setOrientedArc(boolean r){
         this.orientedArc=r;
     }
-    /* Méthode permettant de récupérer un nom valable */
+
+    /**
+     * Fenêtre qui va permettre de faire la selection du nom de l'élément
+     *
+     * @return Chaine correspondant au nom de l'élément
+     */
     public String askName(){
         String x= JOptionPane.showInputDialog(this, "Nommez le nouvel élément :");
         if(x==null){
@@ -136,6 +293,12 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         }
         return x;
     }
+
+    /**
+     * Permet de réaliser le dessin de l'élément
+     *
+     * @param g Objet (Graphics)
+     */
     public void paintComponent(Graphics g){
         super.paintComponent(g); 
         this.graphe.paint(g);
@@ -148,6 +311,14 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
             this.movedSom.paint(g);
         }
     }
+
+    /**
+     * Méthode permettant d'effectuer des actions en fonction des éléments du graphe.
+     *      - Sélection Sommet/Arc
+     *      - Désélection
+     *      - Création Sommet/Arc
+     * @param e Objet (MouseEvent)
+     */
     public void mouseClicked(MouseEvent e){
         this.movedSom=null;
         /* Si on effectue un clique droit */
@@ -293,6 +464,11 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         }
         fenetre.updateBar();
     }
+
+    /**
+     * méthode permettant d'enregistrer le déplacement d'un Sommet dans le dessin
+     * @param e Objet (MouseEvent)
+     */
     public void mousePressed(MouseEvent e){
         if(e.getButton()==MouseEvent.BUTTON1){
             /* Si on clique sur un sommet en maintenant le bouton enfoncé, on le déplace */
@@ -305,7 +481,12 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
                 }
             }
         }
-    }  
+    }
+
+    /**
+     * Méthode permettant de valider la fin de déplacement d'un Sommet
+     * @param e Objet (MouseEvent)
+     */
     public void mouseReleased(MouseEvent e){
         if(e.getButton()==MouseEvent.BUTTON1){
             if(this.movedSom!=null){
@@ -314,9 +495,12 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         }
     }
 
-    public void mouseMoved(MouseEvent e) {
-    }
+    public void mouseMoved(MouseEvent e) {}
 
+    /**
+     * Méthode permettant la mise à jour graphique de l'élément en cours de déplacement
+     * @param e Objet (MouseEvent)
+     */
     public void mouseDragged(MouseEvent e) {
         if(this.movedSom!=null){
             this.movedX= e.getX();
@@ -325,11 +509,15 @@ public class Dessin extends JPanel implements MouseListener,MouseMotionListener 
         }
     }
 
+    /**
+     * Méthode pour réinitialisé le Graphe
+     */
     public void setNewGraph(){
         this.graphe=new Graphe();
         System.gc();
         this.repaint();
     }
-    public void mouseEntered(MouseEvent e) {}  
+
+    public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}  
 }

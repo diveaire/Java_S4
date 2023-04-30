@@ -6,7 +6,8 @@ import javax.swing.*;
 import java.awt.event.*;
 
 /**
- * Fenêtre d'application pour le graph-Editor.
+ * la classe Windows permet de créer une fenêtre d'application pour le graph-Editor.
+ * Elle contient une zone de Dessin, une barre de Menu, une Barre d'infos, une barre d'outils
  */
 public class Windows extends JFrame {
 	/**
@@ -27,7 +28,7 @@ public class Windows extends JFrame {
 	protected InfosBar infosBar;
 
 	/**
-	 * Instantiates a new Windows.
+	 * création de la fenêtre
 	 */
 	Windows(){
 		super("Graphe");
@@ -59,7 +60,7 @@ public class Windows extends JFrame {
 	}
 
 	/**
-	 * mise à jour de l'infos barre
+	 * met à jour l'infos barre
 	 */
 	void updateBar(){
 		//On update l'info barre dans la windows
@@ -72,7 +73,7 @@ public class Windows extends JFrame {
 	/**
 	 * Main.
 	 *
-	 * @param argv the argv
+	 * @param argv arguments de programme
 	 */
 	public static void main(String[] argv){
 		Windows g = new Windows();

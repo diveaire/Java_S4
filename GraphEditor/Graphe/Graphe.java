@@ -4,25 +4,49 @@ package Graphe;
 import java.io.*;
 import java.util.*;
 import java.awt.*;
+import java.util.List;
 
 // PACKAGE LOCAL
 import Graphe.Forme.*;
 
+/**
+ * Class d'un Objet Graphe permettant de faire la représentation d'un graphe
+ */
 public class Graphe implements Serializable {
-    /* Attributs */
-    private ArrayList<Sommet> listSom; // La liste des sommets constituant le graphe
-    public ArrayList<Arc> listArc; // La liste des arcs constituant le graphe
-    /* Constructeurs */
+    /**
+     * Une liste de Sommets
+     */
+    private ArrayList<Sommet> listSom;
+    /**
+     * Une liste d'Arc
+     */
+    private ArrayList<Arc> listArc;
+
+    /**
+     * Création du Graphe.
+     */
     public Graphe(){
         this.listSom=new ArrayList<Sommet>();
         this.listArc=new ArrayList<Arc>();
     }
-    /* Méthodes */
+
+    /**
+     * Ajouter sommet.
+     *
+     * @param s Sommet
+     */
     public void addSommet(Sommet s){
         if(!isSommetInList(s)){
             this.listSom.add(s);
         }
     }
+
+    /**
+     * Récupérer le Sommet. si le Sommet en paramètre appartient au graphe
+     *
+     * @param s Sommet
+     * @return Sommet
+     */
     public Sommet getSommet(Sommet s){
         Sommet x=null;
         for(Sommet a : this.listSom){
@@ -33,10 +57,38 @@ public class Graphe implements Serializable {
         }
         return x;
     }
+
+    /**
+     * Méthode qui renvoie la liste de sommet d'un graphe
+     * @return liste de sommet d'un graphe (Liste de Sommets)
+     */
+    public List<Sommet> getSommetList(){
+        return this.listSom;
+    }
+    /**
+     * Méthode qui renvoie la liste d'Arc d'un graphe
+     * @return liste de sommet d'un graphe (Liste d'Arc)
+     */
+    public List<Arc> getArcList(){
+        return this.listArc;
+    }
+    /**
+     * Méthode qui renvoie un booléen vrai si le Sommet s en paramètre est dans le Graphe
+     *
+     * @param s Sommet
+     * @return Booléen
+     */
     public boolean isSommetInList(Sommet s){
         Sommet x=this.getSommet(s);
         return !(x==null);
     }
+
+    /**
+     * Méthode qui vérifie si le nom choisie n'est pas déjà existant
+     *
+     * @param n String nom
+     * @return Booléen vrai si le nom est disponible
+     */
     public boolean isAvailableName(String n){
         /* Si l'un des éléments du graphe contient ce nom on renvoie faux */
         boolean x=true;
@@ -55,6 +107,12 @@ public class Graphe implements Serializable {
         return x;
         
     }
+
+    /**
+     * Suppression d'un sommet.
+     *
+     * @param s Le Sommet
+     */
     public void delSommet(Sommet s){
         Sommet x=this.getSommet(s);
         /* On créer une liste de suppression contenant tous les arc à supprimer c'est à dire contenant le sommet s */
@@ -70,11 +128,24 @@ public class Graphe implements Serializable {
         }
         this.listSom.remove(x);
     }
+
+    /**
+     * Ajouter un Arc
+     *
+     * @param a L'Arc
+     */
     public void addArc(Arc a){
         if(!isArcInList(a)&&(this.isSommetInList(a.getS1()))&&(this.isSommetInList(a.getS2()))){
             this.listArc.add(a);
         }
     }
+
+    /**
+     * Récupère l'Arc si il appartient au Graphe
+     *
+     * @param a L'Arc
+     * @return  L'Arc
+     */
     public Arc getArc(Arc a){
         Arc x=null;
         for(Arc al : this.listArc){
@@ -84,15 +155,32 @@ public class Graphe implements Serializable {
         }
         return x;
     }
+
+    /**
+     * Méthode qui vérifie si le nom choisie n'est pas déjà existant
+     * @param a L'Arc
+     * @return booléen vrai si l'arc est dans le Graphe
+     */
     public boolean isArcInList(Arc a){
         Arc x=this.getArc(a);
         return !(x==null);
     }
+
+    /**
+     * Suppression d'un Arc
+     *
+     * @param a l'Arc
+     */
     public void delArc(Arc a){
         Arc x=this.getArc(a);
         this.listArc.remove(x);
     }
-    /* Méthode de conversion d'un sommet en un autre */
+
+    /**
+     * Convertir un Sommet différent de Rond en Rond
+     *
+     * @param s Le Sommet
+     */
     public void convertRond(Sommet s){
         if(this.isSommetInList(s) && !(s instanceof Rond)){
             Rond r=new Rond(s.getNom(),s.getX(),s.getY(),s.getLenght(),s.getCouleur());
@@ -115,6 +203,12 @@ public class Graphe implements Serializable {
             this.listArc.addAll(linked);
         }
     }
+
+    /**
+     * Convertir un Sommet différent de Carre en Carre
+     *
+     * @param s Le Sommet
+     */
     public void convertCarre(Sommet s){
         if(this.isSommetInList(s) && !(s instanceof Carre)){
             Carre c=new Carre(s.getNom(),s.getX(),s.getY(),s.getLenght(),s.getCouleur());
@@ -137,6 +231,12 @@ public class Graphe implements Serializable {
             this.listArc.addAll(linked);
         }
     }
+
+    /**
+     * Convertir un Sommet différent de Triangle en Triangle
+     *
+     * @param s Le Sommet
+     */
     public void convertTriangle(Sommet s){
         if(this.isSommetInList(s) && !(s instanceof Triangle)){
             Triangle t=new Triangle(s.getNom(),s.getX(),s.getY(),s.getLenght(),s.getCouleur());
@@ -159,6 +259,12 @@ public class Graphe implements Serializable {
             this.listArc.addAll(linked);
         }
     }
+
+    /**
+     * Dessine les éléments du Graphe
+     *
+     * @param g Objet (Graphics)
+     */
     public void paint(Graphics g){
         for(Sommet s : this.listSom){
             s.paint(g);
@@ -167,7 +273,12 @@ public class Graphe implements Serializable {
             a.paint(g);
         }
     }
-    /* Méthodes de sérialization et de désérialization d'un graphe */
+    /**
+     * Méthode permettant de faire la sérialisation d'un Graphe pour l'enregistrement de celui-ci
+     *
+     * @param g Le Graphe
+     * @param filename Le nom du fichier (String)
+     */
     public void serialize(Graphe g,String filename) {
         try {
             FileOutputStream fileOut = new FileOutputStream(filename);
@@ -180,6 +291,14 @@ public class Graphe implements Serializable {
             i.printStackTrace();
         }
     }
+
+    /**
+     * Méthode permettant de faire la désérialisation d'un Graphe pour l'ouverture de celui-ci
+
+     *
+     * @param filename the filename
+     * @return Le Graphe
+     */
     public Graphe deserialize(String filename) {
         Graphe g = null;
         try {
@@ -196,5 +315,6 @@ public class Graphe implements Serializable {
         }
         return g;
     }
+
 }
 

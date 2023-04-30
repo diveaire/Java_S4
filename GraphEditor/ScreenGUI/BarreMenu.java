@@ -8,18 +8,56 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+/**
+ * Barre de Menu Pour intéragir avec la fenêtre Window
+ */
 public class BarreMenu extends JMenuBar implements ActionListener{
+    /**
+     * Booléen permettant de definir si la fenêtre est affichée ou non
+     */
     private boolean test=false;
+    /**
+     * Différentes sections JMenu
+     */
     private JMenu mnuFile,mnuEdit,mnuAff,mnuHelp;
-    private JMenuItem mnuNewFile, mnuOpenFile,mnuSaveFile,mnuSaveFileAs,mnuExit,mnuUndo,mnuRedo,mnuCopy,mnuCut,mnuPaste,mnuEditBar,mnuHelpBar;
+    /**
+     * JMenuItem
+     */
+    private JMenuItem mnuNewFile, mnuOpenFile,mnuSaveFile,mnuSaveFileAs,mnuExit;
+    /**
+     * JMenuItem section Edit (copier/couper/coller)
+     */
+    private JMenuItem mnuCopy,mnuCut,mnuPaste;
+    /**
+     * JMenuItem section Affichage (EditBar)
+     */
+    private JMenuItem mnuEditBar;
+    /**
+     * JMenuItem section Aide (readme/javadoc)
+     */
+    private JMenuItem mnuHelpBar,mnuHelp2Bar;
+    /**
+     * Le dessin
+     */
     Dessin D;
+    /**
+     * La fenêtre
+     */
     private Windows screen;
+    /**
+     * Map pour les raccourcis
+     */
     private Map<String, Object> clipboard = new HashMap<>();
+
+    /**
+     * Création de la Barre menu.
+     *
+     * @param D      le dessin
+     * @param screen la Windows
+     */
     public BarreMenu(Dessin D, Windows screen) {
         if (!test) {
             test=true;
@@ -27,6 +65,12 @@ public class BarreMenu extends JMenuBar implements ActionListener{
         }
         return;
     }
+
+    /**
+     * Création de la barre menu
+     * @param d le dessins
+     * @param screen le panel Windows
+     */
     private void CreateBar(Dessin d, Windows screen){
         this.D = d;
         this.screen = screen;
@@ -79,23 +123,6 @@ public class BarreMenu extends JMenuBar implements ActionListener{
         // Définition du menu déroulant "Edit" et de son contenu
         mnuEdit = new JMenu( "Editer" );
         mnuEdit.setMnemonic( 'E' );
-        /*
-        mnuUndo = new JMenuItem( "Undo" );
-        mnuUndo.setIcon( new ImageIcon( "Files/Icons/undo.png" ) );
-        mnuUndo.setMnemonic( 'U' );
-        mnuUndo.setAccelerator( KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK) );
-        mnuUndo.addActionListener(this::mnuUndoList);
-        mnuEdit.add(mnuUndo);
-
-        mnuRedo = new JMenuItem( "Redo" );
-        mnuRedo.setIcon( new ImageIcon( "Files/Icons/redo.png" ) );
-        mnuRedo.setMnemonic( 'R' );
-        mnuRedo.setAccelerator( KeyStroke.getKeyStroke(KeyEvent.VK_U, KeyEvent.CTRL_DOWN_MASK) );
-        mnuRedo.addActionListener(this::mnuRedoList);
-        mnuEdit.add(mnuRedo);
-
-        mnuEdit.addSeparator();
-        */
 
         mnuCopy = new JMenuItem("Copier");
         mnuCopy.setIcon(new ImageIcon( "Files/Icons/copy.png" ));
@@ -135,15 +162,30 @@ public class BarreMenu extends JMenuBar implements ActionListener{
         mnuHelpBar = new JMenuItem("Read-Me");
         mnuHelpBar.addActionListener(this::mnuHelpList);
         mnuHelpBar.setAccelerator( KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK) );
+        mnuHelp2Bar = new JMenuItem("Javadoc");
+        mnuHelp2Bar.addActionListener(this::mnuHelp2List);
+        mnuHelp2Bar.setAccelerator( KeyStroke.getKeyStroke(KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK) );
         mnuHelp.add(mnuHelpBar);
+        mnuHelp.add(mnuHelp2Bar);
         add( mnuHelp );
     }
+
+    /**
+     * Ecouteur Nouveau fichier
+     *
+     * @param event the event
+     */
     public void mnuNewList( ActionEvent event ) {
-        JOptionPane.showMessageDialog(this,"New file clicked !");
         D.setNewGraph();
         //On ajoute le dessin à la fenêtre
         //Windows.getInstance().addDessin(g);
     }
+
+    /**
+     * Ecouteur ouvrir fichier.
+     *
+     * @param event the event
+     */
     public void mnuOpenList( ActionEvent event ) {
         JFileChooser chooser = new JFileChooser();
         int resultat = chooser.showOpenDialog(screen);
@@ -160,11 +202,23 @@ public class BarreMenu extends JMenuBar implements ActionListener{
             }
         }
     }
+
+    /**
+     * Ecouteur enregistrer
+     *
+     * @param event the event
+     */
     public void mnuSaveList( ActionEvent event ) {
         // Appel de la méthode serialize avec le nom du fichier par défaut
         String filename = "save.ser";
         screen.d.getGraphe().serialize(screen.d.getGraphe(), filename);
     }
+
+    /**
+     * Ecouteur sauvegarder
+     *
+     * @param event the event
+     */
     public void mnuSaveAsList(ActionEvent event) {
         JFileChooser fileChooser = new JFileChooser();
         if (fileChooser.showSaveDialog(screen) == JFileChooser.APPROVE_OPTION) {
@@ -173,21 +227,19 @@ public class BarreMenu extends JMenuBar implements ActionListener{
             screen.d.getGraphe().serialize(screen.d.getGraphe(), filename);
         }
     }
+
+    /**
+     * Ecouteur quitter l'application
+     *
+     * @param event the event
+     */
     public void mnuExitList(ActionEvent event) {
         System.exit(0);
     }
-    /*
-
-    public void mnuUndoList(ActionEvent event) {
-        JOptionPane.showMessageDialog(this,"Undo clicked !");
-    }
-    public void mnuRedoList(ActionEvent event) {
-        JOptionPane.showMessageDialog(this,"Redo clicked !");
-
-
-    }
-
-    */
+    /**
+     * Ecouteur copie list.
+     * @param event event
+     */
     public void mnuCopyList(ActionEvent event) {
         // Copie l'élément sélectionné dans le presse-papiers
         Sommet element = this.D.getSelSom();
@@ -202,11 +254,23 @@ public class BarreMenu extends JMenuBar implements ActionListener{
         }
         JOptionPane.showMessageDialog(this,"Copie effectuer !");
     }
+
+    /**
+     * Ecouteur couper l'élément.
+     *
+     * @param event the event
+     */
     public void mnuCutList(ActionEvent event) {
         mnuCopyList(event);
         this.D.getGraphe().delSommet(this.D.getSelSom());
         this.D.repaint();
     }
+
+    /**
+     * Ecouteur coller l'element.
+     *
+     * @param event the event
+     */
     public void mnuPasteList(ActionEvent event) {
         // Colle l'élément du presse-papiers en demandant un nom
         String name = D.askName();
@@ -220,9 +284,21 @@ public class BarreMenu extends JMenuBar implements ActionListener{
         }
         this.D.repaint();
     }
+
+    /**
+     * Ecouteur Afficher editBar.
+     *
+     * @param event the event
+     */
     public void mnuEditBarList(ActionEvent event) {
         screen.infosBar.showEditBar();
     }
+
+    /**
+     * Ecouteur help pour ouvrir fichier read-me.
+     *
+     * @param event the event
+     */
     public void mnuHelpList(ActionEvent event) {
         File file = new File("readme.txt");
 
@@ -239,6 +315,20 @@ public class BarreMenu extends JMenuBar implements ActionListener{
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    /**
+     * Ouverture du javadoc sur le navigateur
+     * @param event ActionEvent
+     */
+    public void mnuHelp2List(ActionEvent event) {
+        File file = new File("Files/javadoc/index.html");
+        try {
+            Desktop desktop = Desktop.getDesktop();
+            desktop.browse(file.toURI());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     @Override
