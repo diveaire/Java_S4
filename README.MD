@@ -4,7 +4,7 @@ Projet de Java du semestre 4
 - compiler : make
 - lancer : make start
 - supprimer les .class : make clean
-# fonctionnalités :
+# Fonctionnalités :
 - Ajouter un sommet
 - Ajouter un arc (cliquer sur 2 sommets)
 - Faire des modifications via la fenêtre d'outils
